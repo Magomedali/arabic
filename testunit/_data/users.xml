@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<table name="user">
+		<column>name</column>
+		<column>email</column>
+		<column>phone</column>
+		<column>auth_key</column>
+		<column>password_hash</column>
+		<row>
+			<value>user</value>
+			<value>user@mail.ru</value>
+			<value>12345678</value>
+			<value>89882233444</value>
+			<value>897456321</value>
+		</row>
+		<row>
+			<value>testname2</value>
+			<value>testname2@mail.ru</value>
+			<value>1234567812</value>
+			<value>89882233445</value>
+			<value>89745632121</value>
+		</row>
+	</table>
+</dataset>
