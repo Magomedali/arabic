@@ -31,7 +31,6 @@ class m130524_201442_init extends Migration
             'phone_confirmed'=>$this->boolean()->notNull()->defaultValue(0),
 
             'bdate'=>$this->date()->null(),
-            'egpp_id'=>$this->integer()->null(),
             'isDeleted'=> $this->smallInteger()->notNull()->defaultValue(0),
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
             'version_id'=> $this->integer()->null(),
