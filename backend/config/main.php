@@ -66,9 +66,6 @@ return [
         ],
         'users'=>[
             'class'=> 'backend\modules\users\Users'
-        ],
-        'apiclient'=>[
-            'class'=> 'api\modules\apiclient\ApiClient'
         ]
     ],
     'params' => $params,

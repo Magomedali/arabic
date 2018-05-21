@@ -2,12 +2,9 @@
 
 use yii\helpers\{Html,Url};
 use yii\bootstrap\ActiveForm;
-use common\widgets\googlemap\GoogleMap;
-use common\models\Station;
 
 $this->title = \Yii::$app->name;
 
-$stations = Station::getMapStations();
 ?>
 <div class="row">
 	<div class="col-xs-12">
@@ -17,24 +14,7 @@ $stations = Station::getMapStations();
 <div class="row">
 	<div class="col-xs-8">
 		<div id="map">
-			<?php
-
-				$lat = 59.9309;
-				$lng = 30.3608;
-				echo GoogleMap::widget([
-					'mapOptions'=>[
-						'name'=>"mapStations",
-						'center'=>[
-							'lat'=>$lat,
-							'lng'=>$lng,
-						],
-						'zoom'=>13,
-						'width'=>"100%",
-						'height'=>"650",
-					],
-					'stations'=>$stations
-				]);
-			?>
+			
 		</div>
 	</div>
 	<div class="col-xs-4">

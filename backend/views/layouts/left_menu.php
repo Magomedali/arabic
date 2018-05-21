@@ -46,60 +46,12 @@ use yii\helpers\{Html,Url};
                         <?php } ?>
                         
 
-                        <?php 
-                            if(\Yii::$app->user->can("superadmin")){
-                        ?>
-                        <li>
-                            <a href="#"><i class="fa fa-edit fa-fw"></i> <?php echo \Yii::t('site', 'BICYCLEPARK')?> <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <?php 
-                                    if(\Yii::$app->user->can("superadmin")){
-                                ?>
-                                    <li>
-                                        <a href="<?php echo Url::to(['/station/index'])?>"><?php echo \Yii::t('site', 'STATIONS')?></a>
-                                    </li>
-                                <?php } ?>
-                                <?php 
-                                    if(\Yii::$app->user->can("superadmin")){
-                                ?>
-                                    <li>
-                                        <a href="<?php echo Url::to(['/properties/index'])?>"><?php echo \Yii::t('site', 'PROPERTIES')?></a>
-                                    </li>
-                                <?php } ?>
-                                <?php 
-                                    if(\Yii::$app->user->can("superadmin")){
-                                ?>
-                                    <li>
-                                        <a href="<?php echo Url::to(['/session/index'])?>"><?php echo \Yii::t('site', 'SESSIONS')?></a>
-                                    </li>
-                                <?php } ?>
-                                <?php 
-                                    if(\Yii::$app->user->can("superadmin")){
-                                ?>
-                                    <li>
-                                        <a href="<?php echo Url::to(['/station/map'])?>"><?php echo \Yii::t('site', 'STATIONS_MAP')?></a>
-                                    </li>
-                                <?php } ?>
-                            </ul>
-                        </li>
-                        <?php } ?>
+                        
 
-                        <?php 
-                            if(\Yii::$app->user->can("superadmin")){
-                        ?>
-                        <li>
-                            <a href="<?php echo Url::to(['/api/index'])?>"><i class="fa fa-wrench fa-fw"></i><?php echo \Yii::t('site', 'API_SERVER')?></a>
-                        </li>
-                        <?php } ?>
+                        
 
 
-                        <?php 
-                            if(\Yii::$app->hasModule("apiclient") && \Yii::$app->user->can("superadmin")){
-                        ?>
-                        <li>
-                            <a href="<?php echo Url::to(['/apiclient/test/index'])?>"><i class="fa fa-wrench fa-fw"></i><?php echo \Yii::t('site', 'TEST_FOR_API_SERVER')?></a>
-                        </li>
-                        <?php } ?>
+                        
 
                         <!-- 
                         <li>

@@ -18,21 +18,16 @@
         "yiisoft/yii2": "2.0.13",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
-        "yiisoft/yii2-httpclient": "~2.0.0",
-        "kartik-v/yii2-widget-datepicker": "@dev",
-        "budyaga/yii2-users": "*",
-        "2amigos/yii2-google-maps-library": "*"
+        "kartik-v/yii2-widget-datepicker": "@dev"
     },
     "require-dev": {
-        "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-debug": "*",
-        "yiisoft/yii2-gii": "*",
-        "yiisoft/yii2-faker": "*"
+        "yiisoft/yii2-gii": "*"
     },
-    "config": {
+    "config":{
         "process-timeout": 1800
     },
-    "extra": {
+    "extra":{
         "asset-installer-paths": {
             "npm-asset-library": "vendor/npm",
             "bower-asset-library": "vendor/bower"
