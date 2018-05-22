@@ -5,14 +5,19 @@ use Yii;
 use yii\base\InvalidParamException;
 use yii\web\{BadRequestHttpException,Controller};
 use yii\filters\{VerbFilter,AccessControl};
-use common\models\{User,Station};
+use common\models\{User};
 use frontend\models\{LoginForm,SignupForm,ConfirmUser,ResetPasswordForm,PasswordResetRequestForm};
-use frontend\modules\EgppClient\EgppLoginForm;
+
+
+
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
+
+
+
 
 
     /**
@@ -70,25 +75,19 @@ class SiteController extends Controller
 
 
 
+
+
     /**
      * Displays homepage.
      *
      * @return mixed
      */
     public function actionIndex(){   
-        // $u = Yii::$app->user->identity;
-
-        // $o = $u->getOldAttributes();
         
-        // $u->phone_confirmed = 1;
-
-        // $n = $u->getAttributes();
-
-        // $changed = array_diff_assoc($n,$o);
-        // print_r($changed);
-        // exit;
         return $this->render('index',['signUpModel'=>new SignupForm()]);
     }
+
+
 
 
 
@@ -117,24 +116,9 @@ class SiteController extends Controller
 
 
 
-    public function actionAuthEgpp(){
-
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new EgppLoginForm();
-        
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('egpplogin', [
-                'model' => $model,
-            ]);
-        }
 
 
-    }
+    
 
 
 
@@ -257,37 +241,25 @@ class SiteController extends Controller
 
 
 
-    public function actionConfirmPhone(){
+
+    // public function actionConfirmPhone(){
         
-        $get = Yii::$app->request->get();
+    //     $get = Yii::$app->request->get();
 
-        if(isset($get['pincode']) && isset($get['key'])){
-            try {
-                $model = ConfirmUser::createForPhone($get);
-            } catch (InvalidParamException $e) {
-                throw new BadRequestHttpException($e->getMessage());
-            }
+    //     if(isset($get['pincode']) && isset($get['key'])){
+    //         try {
+    //             $model = ConfirmUser::createForPhone($get);
+    //         } catch (InvalidParamException $e) {
+    //             throw new BadRequestHttpException($e->getMessage());
+    //         }
 
-            if($model->confirm()){
-                Yii::$app->session->setFlash('success','Ваш номер телефона подтвержден, теперь вы можете заходить в личный кабинет используя ваш номер');
-            }
-        }
+    //         if($model->confirm()){
+    //             Yii::$app->session->setFlash('success','Ваш номер телефона подтвержден, теперь вы можете заходить в личный кабинет используя ваш номер');
+    //         }
+    //     }
 
-        return $this->redirect(["site/login"]);
+    //     return $this->redirect(["site/login"]);
 
-    }
-
-
-
-    public function actionMap(){
-
-
-        $stations = Station::getMapStations();
-
-        return $this->render("map",['stations'=>$stations]);
-    }
-
-
-    
+    // }
 
 }
