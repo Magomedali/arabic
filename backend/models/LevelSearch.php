@@ -2,12 +2,13 @@
 
 namespace backend\models;
 
-use backend\models\Properties;
 use yii\db\Query;
 use yii\data\Pagination;
 use yii\data\ActiveDataProvider;
 
-class PropertiesSearch extends Properties
+use backend\models\Level;
+
+class LevelSearch extends Level
 {
     /**
      * Принимаемые моделью входящие данные
@@ -25,12 +26,12 @@ class PropertiesSearch extends Properties
     {
         return [
             // Только числа, значение как минимум должна равняться единице
-            [['title','name'],'safe']
+            [['title','desc','position'],'safe']
         ];
     }
 
     public function scenarios(){
-        return Properties::scenarios();
+        return Level::scenarios();
     }
 
     /**
@@ -40,7 +41,7 @@ class PropertiesSearch extends Properties
     public function search($params)
     {   
         
-        $query = Properties::find();
+        $query = Level::find();
         
         
         
@@ -57,17 +58,22 @@ class PropertiesSearch extends Properties
 
 
         if(!($this->load($params) && $this->validate())){
-            $query->orderBy(['id' => SORT_DESC]);
+            
+            $query->orderBy(['position' => SORT_DESC]);
 
             return $dataProvider;
         }
 
-        if($this->name)
-            $query->andFilterWhere(['like', 'name', $this->name]);
+        
 
         if($this->title)
             $query->andFilterWhere(['like', 'title', $this->title]);
         
+        if($this->desc)
+            $query->andFilterWhere(['like', 'desc', $this->desc]);
+
+        if($this->position)
+            $query->andWhere(['position'=>$this->position]);
 
         return $dataProvider;
     }

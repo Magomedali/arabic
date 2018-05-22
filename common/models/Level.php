@@ -29,14 +29,11 @@ class Level extends ActiveRecord
     public function rules()
     {
         return [
-            [['stand_id','client_id'],'required'],
-            ['start_time','default','value' => date("Y-m-d\TH:i:s",time())],
-            ['start_time','required'],
-            ['actual','default','value'=>1],
-            [['isDeleted','accepted'],'default','value'=>0],
+            [['title','position'],'required'],
+            ['position','unique'],
+            ['desc','default','value'=>null]
         ];
     }
-
 
 
     public function scenarios(){
@@ -44,20 +41,5 @@ class Level extends ActiveRecord
 
     	]);
     }
-
-
-    // public function getStand(){
-    //     return $this->hasOne(Stand::className(),['id'=>'stand_id']);
-    // }
-
-    // public function getStation(){
-    //     return $this->stand->station;
-    // }
-
-    // public function getClient(){
-    //     return $this->hasOne(User::className(),['id'=>'client_id']);
-    // }
-
-
 }
 ?>

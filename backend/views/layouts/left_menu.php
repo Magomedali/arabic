@@ -40,9 +40,19 @@ use yii\helpers\{Html,Url};
                         <?php 
                             if(\Yii::$app->hasModule("users") && \Yii::$app->user->can("superadmin")){
                         ?>
-                        <li>
-                            <a href="<?php echo Url::to(['/users/manager/index'])?>"><i class="fa fa-table fa-fw"></i> Пользователи</a>
-                        </li>
+                            <li>
+                                <a href="<?php echo Url::to(['/users/manager/index'])?>"><i class="fa fa-table fa-fw"></i> Пользователи</a>
+                            </li>
+                        <?php } ?>
+
+                        <?php 
+                            if(\Yii::$app->user->can("superadmin")){
+                        ?>
+                            <li>
+                                <a href="<?php echo Url::to(['/level/index'])?>"><i class="fa fa-table fa-fw"></i>
+                                    <?php echo Yii::t('site',"LEVELS")?>
+                                </a>
+                            </li>
                         <?php } ?>
                         
 

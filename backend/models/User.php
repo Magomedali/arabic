@@ -14,10 +14,7 @@ class User extends commonUser
 	protected $_roles;
 
 	public function canGetIn(){
-		return 	$this->hasRole("superadmin") || 
-				$this->hasRole("administrator") || 
-				$this->hasRole("manager") || 
-				$this->hasRole("dispatcher");
+		return 	$this->hasRole("superadmin");
 	}
 
 

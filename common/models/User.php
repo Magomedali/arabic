@@ -4,7 +4,7 @@ namespace common\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
-use common\base\ActiveRecordVersionable;
+use common\base\ActiveRecord;
 use yii\web\IdentityInterface;
 use common\enums\Token;
 use common\models\Session;
@@ -22,27 +22,14 @@ use common\models\Session;
  * @property integer $created_at
  * @property string $password write-only password
  */
-class User extends ActiveRecordVersionable implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
     
 
-    public static function versionableAttributes(){
-        return [
-            'name',
-            'sname',
-            'patronymic',
-            'password_hash',
-            'email',
-            'email_confirmed',
-            'phone',
-            'phone_confirmed',
-            'status',
-            'isDeleted',
-        ];
-    }
+    
 
     
     /**
@@ -90,7 +77,13 @@ class User extends ActiveRecordVersionable implements IdentityInterface
     }
 
 
-    
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
 
 
     public function getFullName(){

@@ -284,13 +284,19 @@ AppAsset::register($this);
                 <div class="col-lg-12">
                     <h1 class="page-header"><?php echo $this->title;?></h1>
                 </div>
+                <div class="col-lg-12">
+                    <?php echo Breadcrumbs::widget([
+                                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []
+                            ]); 
+                    ?>
+                </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
 
-            <?= \common\widgets\Notification\Notify::widget(); ?>
+            <?php echo  \common\widgets\Notification\Notify::widget(); ?>
             
-            <?= $content ?>
+            <?php echo $content ?>
 
         </div>
         <!-- /#page-wrapper -->

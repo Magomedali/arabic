@@ -2,12 +2,12 @@
 
 namespace backend\models;
 
-use backend\models\Station;
+use backend\models\Lesson;
 use yii\db\Query;
 use yii\data\Pagination;
 use yii\data\ActiveDataProvider;
 
-class StationSearch extends Station
+class LessonSearch extends Lesson
 {
     /**
      * Принимаемые моделью входящие данные
@@ -25,12 +25,12 @@ class StationSearch extends Station
     {
         return [
             // Только числа, значение как минимум должна равняться единице
-            //[[],'safe']
+            [['title','name'],'safe']
         ];
     }
 
     public function scenarios(){
-        return Station::scenarios();
+        return Lesson::scenarios();
     }
 
     /**
@@ -39,8 +39,11 @@ class StationSearch extends Station
      */
     public function search($params)
     {   
-        $query = Station::find();
-        $query->orderBy(['id' => SORT_DESC]);
+        
+        $query = Lesson::find();
+        
+        
+        
         /**
          * Создаём DataProvider, указываем ему запрос, настраиваем пагинацию
          */
@@ -48,14 +51,24 @@ class StationSearch extends Station
             'query' => $query,
             'pagination' => new Pagination([
                     'pageSize' => $this->page_size
-                ])
+            ])
         ]);
 
+
+
         if(!($this->load($params) && $this->validate())){
+            $query->orderBy(['id' => SORT_DESC]);
+
             return $dataProvider;
         }
+
+        if($this->name)
+            $query->andFilterWhere(['like', 'name', $this->name]);
+
+        if($this->title)
+            $query->andFilterWhere(['like', 'title', $this->title]);
         
-        
+
         return $dataProvider;
     }
 

@@ -6,6 +6,11 @@ namespace common\base;
 class ActiveRecord extends \yii\db\ActiveRecord{
 
 
+
+    
+
+
+    
 	/**
     * @param @attr = attribute name
     * @return translate attribute labels

@@ -45,7 +45,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $m->phone_confirmed ? "+" : "-";
                 }
             ],
-            'egpp_id:text:Идентификатор в ЕГПП',
             'bdate:date:ДР',
             [
                 'attribute' => 'status',

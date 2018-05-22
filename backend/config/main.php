@@ -6,7 +6,7 @@ $params = array_merge(
     require __DIR__ . '/params-local.php'
 );
 
-$log_targets = require __DIR__ . '/../../api/config/log_config.php';
+
 
 return [
     'id' => 'app-backend',
@@ -37,12 +37,12 @@ return [
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => array_merge($log_targets,[
+            'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
-            ])
+            ]
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
