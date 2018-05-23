@@ -23,6 +23,7 @@ class m180521_084651_learning extends Migration
             'id'        => $this->primaryKey(),
             'title'     => $this->string()->notNull(),
             'desc'      => $this->text()->null(),
+            'isPublic'  => $this->boolean()->null(),
             'position'  => $this->smallInteger()->null()
         ], $tableOptions);
 
@@ -40,11 +41,12 @@ class m180521_084651_learning extends Migration
             'number'    => $this->integer()->notNull(),
             'title'     => $this->string()->notNull(),
             'desc'      =>$this->text()->null(),
+            'isPublic'  => $this->boolean()->null(),
         ], $tableOptions);
 
         $this->createIndex('lesson_number_unique_index',
                 'lesson', 
-                ['number'], 
+                ['number','level'], 
                 true);
         
         $this->addForeignKey('fk-lesson-level', '{{%lesson}}', 'level', 'level', 'id');
@@ -57,6 +59,7 @@ class m180521_084651_learning extends Migration
             'id'        => $this->primaryKey(),
             'lesson'     => $this->integer()->notNull(),
             'position'    => $this->integer()->notNull(),
+            'isPublic'  => $this->boolean()->null(),
         ], $tableOptions);
 
         $this->createIndex('block_lesson_position_unique_index',
@@ -74,6 +77,7 @@ class m180521_084651_learning extends Migration
             'block'        => $this->integer()->notNull(),
             'type'      => $this->integer()->notNull(),
             'content'      => $this->text()->null(),
+            'isPublic'  => $this->boolean()->null(),
         ], $tableOptions);
 
         

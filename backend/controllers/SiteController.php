@@ -41,6 +41,8 @@ class SiteController extends Controller
         ];
     }
 
+
+
     /**
      * @inheritdoc
      */
@@ -52,6 +54,8 @@ class SiteController extends Controller
             ],
         ];
     }
+
+
 
     /**
      * Displays homepage.
@@ -65,6 +69,8 @@ class SiteController extends Controller
 
         return $this->render('index');
     }
+
+
 
     /**
      * Login action.
@@ -89,6 +95,8 @@ class SiteController extends Controller
             ]);
         }
     }
+
+
 
     /**
      * Logout action.

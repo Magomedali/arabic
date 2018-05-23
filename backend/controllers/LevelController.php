@@ -4,7 +4,7 @@ namespace backend\controllers;
 use Yii;
 use yii\web\{Controller,HttpException};
 use yii\filters\AccessControl;
-use backend\models\{Level,LevelSearch};
+use backend\models\{Level,LevelSearch,Lesson,LessonSearch};
 
 /**
  * Site controller
@@ -32,6 +32,9 @@ class LevelController extends Controller
         ];
     }
 
+
+
+
     /**
      * @inheritdoc
      */
@@ -43,6 +46,9 @@ class LevelController extends Controller
             ],
         ];
     }
+
+
+
 
     /**
      * Displays level main page.
@@ -97,6 +103,8 @@ class LevelController extends Controller
 
 
 
+
+
     public function actionView($id){
 
         if(!$id){
@@ -109,7 +117,36 @@ class LevelController extends Controller
             throw new HttpException(404,'Document Does Not Exist');
         }
 
-        return $this->render('view',['model'=>$model]);
+
+        $post = Yii::$app->request->post();
+        if(isset($post['Lesson'])){
+            $newlesson = new Lesson;
+            if($newlesson->load($post) && $newlesson->save()){
+                Yii::$app->session->setFlash("success",Yii::t("level","LEVEL_ADD_LESSON_SUCCESS"));
+               
+                $newlesson = new Lesson;
+            
+            }else{
+                Yii::$app->session->setFlash("danger",Yii::t("level","LEVEL_ADD_LESSON_ERROR"));
+            }
+        
+        }else{
+            $newlesson = new Lesson;
+        }
+
+        
+
+        $filterLessons = new LessonSearch;
+        $filters = Yii::$app->request->queryParams;
+        $filters['LessonSearch']['level'] = $model->id;
+        $dataProvider = $filterLessons->search($filters);
+        
+        return $this->render('view',[
+            'model'=>$model,
+            'lesson' => $newlesson,
+            'dataProvider'=>$dataProvider,
+            'filterLessons'=>$filterLessons
+        ]);
     }
 
 
@@ -135,4 +172,8 @@ class LevelController extends Controller
         return $this->redirect(['level/index']);
     }
     
+
+
+
+
 }

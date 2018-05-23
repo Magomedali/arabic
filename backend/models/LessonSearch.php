@@ -12,9 +12,6 @@ class LessonSearch extends Lesson
     /**
      * Принимаемые моделью входящие данные
      */
-
-   
-
     public $page_size = 50;
 
     /**
@@ -25,7 +22,7 @@ class LessonSearch extends Lesson
     {
         return [
             // Только числа, значение как минимум должна равняться единице
-            [['title','name'],'safe']
+            [['title','number','level'],'safe']
         ];
     }
 
@@ -57,17 +54,18 @@ class LessonSearch extends Lesson
 
 
         if(!($this->load($params) && $this->validate())){
-            $query->orderBy(['id' => SORT_DESC]);
-
+            
             return $dataProvider;
         }
 
-        if($this->name)
-            $query->andFilterWhere(['like', 'name', $this->name]);
+        if($this->number)
+            $query->andWhere(['number'=>$this->number]);
 
         if($this->title)
             $query->andFilterWhere(['like', 'title', $this->title]);
         
+        if($this->level)
+            $query->andWhere(['level'=>$this->level]);
 
         return $dataProvider;
     }

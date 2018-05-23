@@ -31,7 +31,9 @@ class Level extends ActiveRecord
         return [
             [['title','position'],'required'],
             ['position','unique'],
-            ['desc','default','value'=>null]
+            ['position','integer'],
+            ['desc','default','value'=>null],
+            ['isPublic','default','value' => true ]
         ];
     }
 
@@ -40,6 +42,11 @@ class Level extends ActiveRecord
     	return array_merge(parent::scenarios(),[
 
     	]);
+    }
+
+
+    public function getLessons(){
+        return $this->hasMany(Lesson::className(),['level'=>'id']);
     }
 }
 ?>
