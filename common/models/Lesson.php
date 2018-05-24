@@ -4,7 +4,7 @@ namespace common\models;
 use Yii;
 use yii\base\NotSupportedException;
 use common\base\ActiveRecord;
-use common\models\{Level};
+use backend\models\{Level,Block};
 use yii\db\Query;
 
 class Lesson extends ActiveRecord
@@ -19,7 +19,7 @@ class Lesson extends ActiveRecord
     }
 
 
-    
+    const SCENARIO_CREATE = 'create';
 
 
 
@@ -41,7 +41,7 @@ class Lesson extends ActiveRecord
 
     public function scenarios(){
     	return array_merge(parent::scenarios(),[
-
+            self::SCENARIO_CREATE => ['number','title','desc','isPublic','level']
     	]);
     }
 
@@ -52,15 +52,43 @@ class Lesson extends ActiveRecord
         if(!$this->hasErrors()){
 
             $lesson = self::findOne(['level'=>$this->level,'number'=>$this->number]);
+
+            
+
             if(isset($lesson->id)){
-                $this->addError($attribute,Yii::t('level','CHECK_EXISTS_LESSON_ERROR'));
+                if(!isset($this->id) || $this->id != $lesson->id){
+                    $this->addError($attribute,Yii::t('level','CHECK_EXISTS_LESSON_ERROR'));
+                }
             }
         }
     }
 
 
-    public function getLevel(){
+    public function getLevelModel(){
         return $this->hasOne(Level::className(),['id'=>'level']);
+    }
+
+
+    public function getBlocks(){
+        return $this->hasMany(Block::className(),['lesson'=>'id']);
+    }
+
+
+
+
+    public function addBlock($blockParams){
+        $block = new Block;
+        
+        if(isset($blockParams['Block'])){
+
+            $block->load($blockParams);
+            $block->save();
+            
+            return $block;
+        }
+
+        return false;
+
     }
 }
 ?>

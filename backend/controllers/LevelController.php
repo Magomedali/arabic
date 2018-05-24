@@ -121,6 +121,7 @@ class LevelController extends Controller
         $post = Yii::$app->request->post();
         if(isset($post['Lesson'])){
             $newlesson = new Lesson;
+            
             if($newlesson->load($post) && $newlesson->save()){
                 Yii::$app->session->setFlash("success",Yii::t("level","LEVEL_ADD_LESSON_SUCCESS"));
                
