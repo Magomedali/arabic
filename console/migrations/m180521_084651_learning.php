@@ -77,6 +77,7 @@ class m180521_084651_learning extends Migration
             'block'        => $this->integer()->notNull(),
             'type'      => $this->integer()->notNull(),
             'content'      => $this->text()->null(),
+            'position'  => $this->integer()->notNull(),     
             'isPublic'  => $this->boolean()->null(),
         ], $tableOptions);
 

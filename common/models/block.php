@@ -31,6 +31,7 @@ class Block extends ActiveRecord
         return [
             [['lesson','position'],'required'],
             [['lesson','position'],'integer'],
+
             ['isPublic','default','value' => true ],
             ['position','checkExistsBlock']
         ];
@@ -60,6 +61,12 @@ class Block extends ActiveRecord
 
     public function getLessonModel(){
         return $this->hasOne(Lesson::className(),['id'=>'lesson']);
+    }
+
+
+
+    public function getElements(){
+        return $this->hasMany(Element::className(),['block'=>'id']);
     }
 
 

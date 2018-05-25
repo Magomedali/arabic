@@ -199,3 +199,7 @@ a.desc:after {
 .sub_params li{
     padding-left: 25px;
 }
+
+.lesson-block{
+    border:1px solid #000;
+}

@@ -2,7 +2,7 @@
 
 use yii\helpers\{Url,Html};
 use yii\bootstrap\ActiveForm;
-
+use backend\models\Element;
 $this->title = Yii::t("lesson","LESSON_TITLE",['title'=>$model->title]);
 
 $level = $model->levelModel;
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
 	<div class="col-xs-6">
 		<?php
-			;
+			
 			if(is_array($blocks) && count($blocks)){
 				foreach ($blocks as $key => $b) {
 
@@ -71,9 +71,45 @@ $this->params['breadcrumbs'][] = $this->title;
 										<?php echo $form->field($b,'id')->hiddenInput(['value'=>$b->id])->label(false); ?>
 										<?php echo Html::submitbutton(Yii::t("lesson",'SAVE_BLOCK'),['class'=>'btn btn-primary']); ?>
 									</div>
+									<div class="col-xs-3">
+										<?php echo Html::a(Yii::t("lesson",'REMOVE_BLOCK'),['lesson/remove-block','id'=>$b['id']],['class'=>'btn btn-danger','data-confirm'=>Yii::t('lesson','REMOVE_BLOCK_CONFIRM')])?>
+									</div>
 								</div>
 							
+							<div class="row">
+								<div class="col-xs-6">
+									<?php 
+										echo Html::dropDownList("element_type",Element::TYPE_TEXT,Element::$TYPE_TITLES,['class'=>'form-control new-element-type']);
+									?>
+								</div>
+								<div class="col-xs-6">
+									<?php 
+										echo Html::a(Yii::t('lesson','ADD_ELEMENT'),['lesson/get-element-form','id'=>$b['id']],['class'=>'btn btn-primary btn-add-element']);
+									?>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="block-elements">
+										<?php
+											$block_elements = $b->elements;
+											
+											if(count($block_elements)){
+												echo $this->render("elementsForm",['block_elements'=>$block_elements,'count'=>0]);
+												
+											}
+
+											if(count($errorElements)){
+												foreach ($variable as $key => $value) {
+													echo $this->render("elementsForm",['block_elements'=>$errorElements,'count'=>count($block_elements)]);
+												}
+											}
+										?>
+									</div>
+								</div>
+							</div>
 							<?php ActiveForm::end(); ?>
+
 						</div>
 					<?php
 				}
@@ -101,8 +137,183 @@ $this->params['breadcrumbs'][] = $this->title;
 					<?php echo $form->field($newblock,'lesson')->hiddenInput(['value'=>$model->id])->label(false); ?>
 					<?php echo Html::submitbutton(Yii::t("lesson",'SAVE_BLOCK'),['class'=>'btn btn-primary']); ?>
 				</div>
-				
+			</div>
+			<div class="row">	
+				<div class="col-xs-12">
+					<div class="row">
+						<div class="col-xs-6">
+							<?php 
+								echo Html::dropDownList("element_type",Element::TYPE_TEXT,Element::$TYPE_TITLES,['class'=>'form-control','id'=>'new-element-type']);
+							?>
+						</div>
+						<div class="col-xs-6">
+							<?php
+								echo Html::a(Yii::t('lesson','ADD_ELEMENT'),['lesson/get-element-form'],['class'=>'btn btn-primary','id'=>'btn-add-element']);
+								
+								$js = <<<JS
+									var send_newElement = 0;
+									$("body").on("click","#btn-add-element",function(event){
+										event.preventDefault();
+
+										var count = $("#newBlockElements .block-element").length;
+										var type = $("#new-element-type").val();
+
+										if(type && !send_newElement){
+											$.ajax({
+												url:$(this).attr("href"),
+												data:{
+													count:count,
+													type:type
+												},
+												dataType:"json",
+												type:"GET",
+												beforeSend:function(){
+													send_newElement = 1;
+												},
+												success:function(json){
+
+													if(json.hasOwnProperty("html")){
+														$("#newBlockElements").append(json.html);
+													}
+
+												},
+												error:function(msg){
+													console.log(msg);
+												},
+												complete:function(){
+													send_newElement = 0;
+												},
+											});
+										}
+									});
+JS;
+								$this->registerJs($js);
+							?>	
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12" id="newBlockElements">
+							<?php
+								if($newBlockElements && count($newBlockElements)){
+									foreach ($newBlockElements as $key => $ne) {
+
+										$class = "Elements[{$key}]";
+										?>
+
+										<div class="row block-element">	
+
+												<div class="col-xs-8">	
+												<?php
+													if($ne['type'] == Element::TYPE_IMAGE){
+														echo Html::textarea($class."[content]",$ne['content'],['class'=>'form-control']);
+													}elseif($ne['type'] == Element::TYPE_VIDEO){
+														echo Html::textarea($class."[content]",$ne['content'],['class'=>'form-control']);
+													}elseif($ne['type'] == Element::TYPE_IMAGE){
+														echo Html::textarea($class."[content]",$ne['content'],['class'=>'form-control']);
+													}else{
+														echo Html::textarea($class."[content]",$ne['content'],['class'=>'form-control']);
+													}
+												?>
+												</div>
+
+												<div class="col-xs-2">
+													<?php echo Html::textInput($class."[position]",$ne['position'],['class'=>'form-control','min'=>1,'type'=>'number']);?>
+												</div>
+
+												<div class="col-xs-2">
+													<?php echo Html::a("X",null,['class'=>'btn btn-danger removeElement','data-confirm'=>Yii::t('lesson','REMOVE_ELEMENT_CONFIRM')]);?>
+												</div>
+										</div>
+
+										<?php
+									}
+								}
+							?>
+						</div>
+					</div>
+				</div>
 			</div>
 		<?php ActiveForm::end(); ?>
 	</div>
 </div>
+<?php 
+
+
+$js = <<<JS
+			var send_get_element = 0;
+			$("body").on("click",".btn-add-element",function(event){
+				event.preventDefault();
+
+				var lesson_block = $(this).parents(".lesson-block");
+				var count = lesson_block.find(".block-elements .block-element").length;
+				var type = lesson_block.find(".new-element-type").val();
+
+				if(type && !send_get_element){
+					$.ajax({
+						url:$(this).attr("href"),
+						data:{
+							count:count,
+							type:type
+						},
+						dataType:"json",
+						type:"GET",
+						beforeSend:function(){
+							send_get_element = 1;
+						},
+						success:function(json){
+							if(json.hasOwnProperty("html")){
+								lesson_block.find(".block-elements").append(json.html);
+							}
+						},
+						error:function(msg){
+							console.log(msg);
+						},
+						complete:function(){
+							send_get_element = 0;
+						},
+					});
+				}
+			});
+
+									
+			$("body").on("click",".removeElement",function(event){
+				event.preventDefault();
+				$(this).parents(".block-element").remove();			
+			});
+
+
+			var send_removeElement = 0;
+			$("body").on("click",".removeElementFromDb",function(event){
+				event.preventDefault();
+				if(!confirm("Confirm your action!!!")){
+					return;
+				}
+				var element = $(this).parents(".block-element");
+
+				if(element && !send_removeElement){
+					$.ajax({
+						url:$(this).attr("href"),
+						dataType:"json",
+						type:"GET",
+						beforeSend:function(){
+							send_removeElement = 1;
+						},
+						success:function(json){
+							if(json.hasOwnProperty("res") && json.res == 1){
+								element.remove();
+							}
+						},
+						error:function(msg){
+							console.log(msg);
+						},
+						complete:function(){
+							send_removeElement = 0;
+						},
+					});
+				}
+			})
+						
+JS;
+	$this->registerJs($js);
+?>
+
