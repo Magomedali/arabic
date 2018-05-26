@@ -1,9 +1,17 @@
 <?php
 
 use yii\helpers\{Html,Url};
+use yii\bootstrap\ActiveForm;
+use yii\grid\GridView;
 
 $this->title = Yii::t('level',"LEVEL_TITLE",['title'=>$model->title]);
+$this->params['breadcrumbs'][] = [
+	'label' => Yii::t('level',"LEVELS"),
+	'url' => Url::to(['level/index'])
+];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="row">
 	<div class="col-xs-12 page-action-panel">
 		<?php
@@ -16,6 +24,8 @@ $this->title = Yii::t('level',"LEVEL_TITLE",['title'=>$model->title]);
 		?>
 	</div>
 </div>
+
+
 <div class="row">
 	<div class="col-xs-3">
 		<h4><?php echo Yii::t('level','LEVEL');?></h4>
@@ -32,6 +42,87 @@ $this->title = Yii::t('level',"LEVEL_TITLE",['title'=>$model->title]);
 			
 		</table>
 	</div>
+</div>
 
-	
+
+<div class="row">
+	<div class="col-xs-12">
+		 <h3><?php echo Yii::t('level','FROM_NEW_LESSON');?></h3>
+	</div>
+	<div class="col-xs-12">
+		<?php $form = ActiveForm::begin(['id'=>'newLesson']);?>
+		<div class="row">
+			<div class="col-xs-3">
+				<?php echo $form->field($lesson,"title")->textInput()?>
+			</div>
+			<div class="col-xs-3">
+				<?php echo $form->field($lesson,"number")->textInput(['type'=>'number','min'=>1])?>
+			</div>
+			<div class="col-xs-3">
+				<?php echo $form->field($lesson,"level")->hiddenInput(['value'=>$model->id])->label(false)?>
+				<?php echo Html::submitButton(Yii::t('level','ADD_LESSON'),['class'=>'btn btn-success'])?>
+			</div>
+		</div>
+		<?php ActiveForm::end();?>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<?php 
+			echo GridView::widget([
+				'dataProvider'=>$dataProvider,
+				'filterModel'=>$filterLessons,
+				'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
+				'tableOptions' => [
+	            	'id'=>'transactions','class'=>'table table-striped table-bordered'
+	        	],
+	        	'summary'=>'',
+				'columns'=>[
+					[
+						'attribute'=>'id',
+						'label'=>'ID',
+						'value'=>function ($l) {
+	                            return "#".$l['id'];
+	                        }
+					],
+					'title',
+					'number',
+					[
+		                'class' => 'yii\grid\ActionColumn',
+		                'template' => '{view}&nbsp&nbsp{form}&nbsp&nbsp{delete}',
+		                'buttons' => [
+		                    'view' => function ($url, $model, $key) {
+		                        
+		                        if (!Yii::$app->user->can('superadmin')) {
+		                            return '';
+		                        }
+		                        $options = [
+
+		                        ];
+		                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',['lesson/view','id'=>$model['id']] , $options);
+		                    },
+		                    'form' => function ($url, $model, $key) {
+		                        
+		                        if (!Yii::$app->user->can('superadmin')) {
+		                            return '';
+		                        }
+		                        
+		                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['lesson/form','id'=>$model['id']]);
+		                    },
+		                    'delete' => function ($url, $model, $key) {
+		                        
+		                        if (!Yii::$app->user->can('superadmin')) {
+		                            return '';
+		                        }
+		                        
+		                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['lesson/delete','id'=>$model['id']],['data-confirm'=>Yii::t("level",'LESSON_DELETE_CONFIRM')]);
+		                    },
+		                ]
+	                ]
+					
+				],
+			]);
+		?>
+	</div>
 </div>
