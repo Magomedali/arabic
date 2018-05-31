@@ -28,10 +28,10 @@ class Element extends ActiveRecord
 
 
 	public static $TYPE_TITLES = [
-		self::TYPE_TEXT => "text",
-		self::TYPE_AUDIO => "audio",
-		self::TYPE_IMAGE => "image",
-		self::TYPE_VIDEO => "video"
+		self::TYPE_TEXT => "TEXT",
+		self::TYPE_AUDIO => "AUDIO",
+		self::TYPE_IMAGE => "IMAGE",
+		//self::TYPE_VIDEO => "video"
 	];
 
 
@@ -61,7 +61,7 @@ class Element extends ActiveRecord
             [['block','type'],'required'],
             [['block','position','type'],'integer'],
             ['content','string'],
-            ['files','file', 'skipOnEmpty' => true, 'extensions' => ['png', 'jpg', 'gif', 'mp4', 'mp3'],'checkExtensionByMimeType'=>false],
+            ['files','file', 'skipOnEmpty' => true, 'extensions' => ['png', 'jpg', 'gif', 'mp4','m4a','mpeg', 'mp3'],'checkExtensionByMimeType'=>false],
             ['isPublic','default','value' => true ],
             ['position','default','value' => 1 ]
         ];

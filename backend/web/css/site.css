@@ -203,3 +203,11 @@ a.desc:after {
 .lesson-block{
     border:1px solid #000;
 }
+
+.formEditlesson{
+
+}
+
+.formEditlesson button{
+    margin-top: 24px;
+}

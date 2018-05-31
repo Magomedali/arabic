@@ -21,26 +21,26 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="col-xs-12">
 		<h2>Edit: <?php echo Html::encode($model->title); ?></h2> 
 	</div>
-	<div class="col-xs-12">
+	<div class="col-xs-12 formEditlesson">
 		<?php $form = ActiveForm::begin(['id'=>'formEditlesson']);?>
 		<div class="row">
-			<div class="col-xs-3">
-				<?php echo $form->field($model,"title")->textInput()?>
+			<div class="col-xs-1">
+				<?php echo $form->field($model,"number")->textInput(['type'=>'number','min'=>1])?>
 			</div>
 			<div class="col-xs-3">
-				<?php echo $form->field($model,"number")->textInput(['type'=>'number','min'=>1])?>
+				<?php echo $form->field($model,"title")->textInput()?>
 			</div>
 			<div class="col-xs-3">
 				<?php echo Html::submitButton(Yii::t('lesson','EDIT_LESSON'),['class'=>'btn btn-success'])?>
 			</div>
 		</div>
 		<?php ActiveForm::end();?>
-	
 	</div>
 </div>
 
 <div class="row">
-	<div class="col-xs-6">
+	<div class="col-xs-12">
+		<h3><?php echo Yii::t('lesson',"BLOCK_SETTINGS");?></h3>
 		<?php
 			
 			if(is_array($blocks) && count($blocks)){
@@ -51,53 +51,57 @@ $this->params['breadcrumbs'][] = $this->title;
 					}
  
 					?>
-						<div class="lesson-block">
-							<div class="row">
-								<div class="col-xs-3">
+						<div class="panel panel-default lesson-block">
+							<div class="panel-heading">
+								<div class="row">
+								<?php $form = ActiveForm::begin(['options'=>['class'=>'form-inline']]); ?>
+								<div class="col-xs-1">
 									<h5><?php echo Yii::t('lesson','BLOCK',['position'=>$b['position']]); ?></h5>
 								</div>
-							</div>
-							<?php $form = ActiveForm::begin(['options' =>['enctype'=>'multipart/form-data']]); ?>
-
-								<div class="row">
-									<div class="col-xs-3">
-										<?php echo $form->field($b,'position')->textInput(['type'=>'number','min'=>1]); ?>
-									</div>
-									<div class="col-xs-3">
-										<?php echo $form->field($b,'isPublic')->checkbox(['id'=>'block#'.$b['id']]);?>
-									</div>
-									<div class="col-xs-3">
-										<?php echo $form->field($b,'lesson')->hiddenInput(['value'=>$model->id])->label(false); ?>
-										<?php echo $form->field($b,'id')->hiddenInput(['value'=>$b->id])->label(false); ?>
+								<div class="col-xs-2">
+										<?php echo $form->field($b,'position')->textInput(['type'=>'number','min'=>1,'style'=>"width: 85px;"]); ?>
+								</div>
+								<div class="col-xs-1">
+									<?php echo $form->field($b,'isPublic')->checkbox(['id'=>'block#'.$b['id']]);?>
+								</div>
+								<div class="col-xs-3 col-xs-offset-5">
+									<div class="btn-group">
 										<?php echo Html::submitbutton(Yii::t("lesson",'SAVE_BLOCK'),['class'=>'btn btn-primary']); ?>
-									</div>
-									<div class="col-xs-3">
 										<?php echo Html::a(Yii::t("lesson",'REMOVE_BLOCK'),['lesson/remove-block','id'=>$b['id']],['class'=>'btn btn-danger','data-confirm'=>Yii::t('lesson','REMOVE_BLOCK_CONFIRM')])?>
 									</div>
 								</div>
-							<?php ActiveForm::end(); ?>
-							<div class="row">
-								<div class="col-xs-6">
-									<?php 
-										echo Html::dropDownList("element_type",Element::TYPE_TEXT,Element::$TYPE_TITLES,['class'=>'form-control new-element-type']);
-									?>
+								<?php echo $form->field($b,'lesson')->hiddenInput(['value'=>$model->id])->label(false); ?>
+								<?php echo $form->field($b,'id')->hiddenInput(['value'=>$b->id])->label(false); ?>
+
+								<?php ActiveForm::end(); ?>
 								</div>
-								<div class="col-xs-6">
-									<?php 
-										echo Html::a(Yii::t('lesson','ADD_ELEMENT'),['lesson/get-element-form','id'=>$b['id']],['class'=>'btn btn-primary btn-add-element']);
-									?>
+							
+							
+								<div class="row">
+									<div class="col-xs-6">
+										<?php 
+											echo Html::dropDownList("element_type",Element::TYPE_TEXT,Element::$TYPE_TITLES,['class'=>'form-control new-element-type']);
+										?>
+									</div>
+									<div class="col-xs-6">
+										<?php 
+											echo Html::a(Yii::t('lesson','ADD_ELEMENT'),['lesson/get-element-form','id'=>$b['id']],['class'=>'btn btn-primary btn-add-element']);
+										?>
+									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-xs-12">
-									<div class="block-elements">
-										<?php
-											$block_elements = $b->elements;
-											if(count($block_elements)){
-												echo $this->render("elementsForm",['block_elements'=>$block_elements,'block'=>$b['id']]);
-												
-											}
-										?>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-xs-12">
+										<div class="block-elements">
+											<?php
+												$block_elements = $b->elements;
+												if(count($block_elements)){
+													echo $this->render("elementsForm",['block_elements'=>$block_elements,'block'=>$b['id']]);
+													
+												}
+											?>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -128,7 +132,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				</div>
 				<div class="col-xs-3">
 					<?php echo $form->field($newblock,'lesson')->hiddenInput(['value'=>$model->id])->label(false); ?>
-					<?php echo Html::submitbutton(Yii::t("lesson",'SAVE_BLOCK'),['class'=>'btn btn-primary']); ?>
+					<?php echo Html::submitbutton(Yii::t("lesson",'ADD_BLOCK'),['class'=>'btn btn-primary']); ?>
 				</div>
 			</div>
 		<?php ActiveForm::end(); ?>
