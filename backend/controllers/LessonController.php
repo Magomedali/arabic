@@ -219,10 +219,10 @@ class LessonController extends Controller
             }
 
             $get = Yii::$app->request->get();
-            $count = isset($get['count']) ? (int)$get['count'] : 0;
+            $count = isset($get['count']) ? (int)$get['count'] + 1 : 0;
             $type = isset($get['type']) && array_key_exists($get['type'],Element::$TYPE_TITLES) ? $get['type'] : Element::TYPE_TEXT;
 
-            $ans['html'] = $this->renderPartial("elementForm",['block'=>$block->id,'type'=>$type]);
+            $ans['html'] = $this->renderAjax("elementForm",['block'=>$block->id,'type'=>$type,'count'=>$count]);
             
             return $ans;
 

@@ -3,6 +3,8 @@
 use yii\helpers\{Url,Html};
 use yii\bootstrap\ActiveForm;
 use backend\models\Element;
+use vova07\imperavi\Widget;
+
 $this->title = Yii::t("lesson","LESSON_TITLE",['title'=>$model->title]);
 
 $level = $model->levelModel;
@@ -124,12 +126,14 @@ $this->params['breadcrumbs'][] = $this->title;
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-3">
+				<div class="col-xs-6">
 					<?php echo $form->field($newblock,'position')->textInput(['type'=>'number','min'=>1]); ?>
 				</div>
+				
 				<div class="col-xs-3">
 					<?php echo $form->field($newblock,'isPublic')->checkbox();?>
 				</div>
+
 				<div class="col-xs-3">
 					<?php echo $form->field($newblock,'lesson')->hiddenInput(['value'=>$model->id])->label(false); ?>
 					<?php echo Html::submitbutton(Yii::t("lesson",'ADD_BLOCK'),['class'=>'btn btn-primary']); ?>

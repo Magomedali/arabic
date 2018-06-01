@@ -3,7 +3,7 @@ use yii\helpers\{Html,Url};
 use yii\helpers\ArrayHelper;
 use backend\models\Element;
 use yii\bootstrap\ActiveForm;
-
+use vova07\imperavi\Widget;
 
 $model = new Element;
 ?>
@@ -25,7 +25,28 @@ $model = new Element;
 				</div>
 
 				<div class="col-xs-6">	
-					<?php echo $form->field($model,'content')->textarea();?>
+					<?php echo $form->field($model,'content')->widget(Widget::className(), [
+						'model'=>$model,
+						'attribute'=>'content',
+						'options'=>[
+							'id'=>"textareaContent_{$block}_{$count}"
+						],
+					    'settings' => [
+					        'lang' => 'ru',
+					        'minHeight' => 200,
+					        'plugins' => [
+					            'clips',
+					            'fullscreen',
+					            'fontsize',
+					            'table',
+					            'textdirection',
+					            'textexpander',
+					            'video',
+					            'fontcolor',
+					            'counter'
+					        ]
+					    ]
+					]);?>
 				</div>
 
 				<?php

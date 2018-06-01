@@ -3,6 +3,7 @@
 use yii\helpers\{Html,Url};
 use yii\bootstrap\ActiveForm;
 use backend\models\Element;
+use vova07\imperavi\Widget;
 
 if(is_array($block_elements) && count($block_elements)){
 	foreach ($block_elements as $key => $ble) {
@@ -25,7 +26,29 @@ if(is_array($block_elements) && count($block_elements)){
 				<?php echo $form->field($ble,'position')->textInput(['min'=>1,'type'=>'number']); ?>
 			</div>
 			<div class="col-xs-6">
-				<?php echo $form->field($ble,'content')->textarea(); ?>
+				<?php //echo $form->field($ble,'content')->textarea(); ?>
+				<?php echo $form->field($ble,'content')->widget(Widget::className(), [
+						'model'=>$ble,
+						'attribute'=>'content',
+						'options'=>[
+							'id'=>"textareaContent_{$ble['block']}_{$key}"
+						],
+					    'settings' => [
+					        'lang' => 'ru',
+					        'minHeight' => 200,
+					        'plugins' => [
+					            'clips',
+					            'fullscreen',
+					            'fontsize',
+					            'table',
+					            'textdirection',
+					            'textexpander',
+					            'video',
+					            'fontcolor',
+					            'counter'
+					        ]
+					    ]
+					]);?>
 			</div>
 
 			<div class="col-xs-3">	
