@@ -25,7 +25,7 @@ $model = new Element;
 				</div>
 
 				<div class="col-xs-6">	
-					<?php echo $form->field($model,'content')->widget(Widget::className(), [
+					<?php echo $type == Element::TYPE_TEXT ? $form->field($model,'content')->widget(Widget::className(), [
 						'model'=>$model,
 						'attribute'=>'content',
 						'options'=>[
@@ -34,8 +34,14 @@ $model = new Element;
 					    'settings' => [
 					        'lang' => 'ru',
 					        'minHeight' => 200,
+					        'imageUpload' => Url::to(['/site/image-upload']),
+        					'imageManagerJson' => Url::to(['/site/images-get']),
+        					'fileUpload' => Url::to(['/site/file-upload']),
+        					'fileManagerJson' => Url::to(['/site/files-get']),
+        					'imageDelete' => Url::to(['/site/file-delete']),
 					        'plugins' => [
-					            'clips',
+					        	'imagemanager',// => 'vova07\imperavi\bundles\ImageManagerAsset',
+					        	'filemanager',// => 'vova07\imperavi\bundles\FileManagerAsset',
 					            'fullscreen',
 					            'fontsize',
 					            'table',
@@ -46,7 +52,7 @@ $model = new Element;
 					            'counter'
 					        ]
 					    ]
-					]);?>
+					]) : "";?>
 				</div>
 
 				<?php

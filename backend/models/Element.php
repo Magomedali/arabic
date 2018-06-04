@@ -32,7 +32,7 @@ class Element extends cElement
             
            
             $file = $this->files;
-            $basename = $file->basename;
+            $basename = uniqid();
             $fName = $basename . '_'.time().'.' . $file->extension;
             $file->saveAs($filePath . $fName);
             $this->file_name = $fName;

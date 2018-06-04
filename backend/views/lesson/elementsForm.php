@@ -27,7 +27,7 @@ if(is_array($block_elements) && count($block_elements)){
 			</div>
 			<div class="col-xs-6">
 				<?php //echo $form->field($ble,'content')->textarea(); ?>
-				<?php echo $form->field($ble,'content')->widget(Widget::className(), [
+				<?php echo $ble['type'] == Element::TYPE_TEXT ? $form->field($ble,'content')->widget(Widget::className(), [
 						'model'=>$ble,
 						'attribute'=>'content',
 						'options'=>[
@@ -36,8 +36,14 @@ if(is_array($block_elements) && count($block_elements)){
 					    'settings' => [
 					        'lang' => 'ru',
 					        'minHeight' => 200,
+					        'imageUpload' => Url::to(['/site/image-upload']),
+        					'imageManagerJson' => Url::to(['/site/images-get']),
+        					'fileUpload' => Url::to(['/site/file-upload']),
+        					'fileManagerJson' => Url::to(['/site/files-get']),
+        					'imageDelete' => Url::to(['/site/file-delete']),
 					        'plugins' => [
-					            'clips',
+					        	'imagemanager',// => 'vova07\imperavi\bundles\ImageManagerAsset',
+					        	'filemanager',// => 'vova07\imperavi\bundles\FileManagerAsset',
 					            'fullscreen',
 					            'fontsize',
 					            'table',
@@ -48,7 +54,7 @@ if(is_array($block_elements) && count($block_elements)){
 					            'counter'
 					        ]
 					    ]
-					]);?>
+					]) : "" ;?>
 			</div>
 
 			<div class="col-xs-3">	

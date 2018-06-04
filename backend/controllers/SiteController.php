@@ -12,6 +12,8 @@ use backend\models\LoginForm;
  */
 class SiteController extends Controller
 {
+
+
     /**
      * @inheritdoc
      */
@@ -22,6 +24,11 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
+                        'actions' => ['images-get','image-upload','file-upload','files-get','file-delete'],
+                        'allow' => true,
+                        'roles' => ['superadmin'],
+                    ],
+                    [
                         'actions' => ['login', 'error'],
                         'allow' => true,
                     ],
@@ -30,6 +37,7 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+
                 ],
             ],
             'verbs' => [
@@ -51,6 +59,34 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
+            ],
+            'images-get'=>[
+                'class' => 'vova07\imperavi\actions\GetImagesAction',
+                'url' => 'http://localhost:8081/arabic/files/common/',
+                'path' => '@files/common/',
+                //'options' => ['only' => ['*.jpg', '*.jpeg', '*.png', '*.gif', '*.mp3','*.mpeg']],
+            ],
+            'image-upload' => [
+                'class' => 'vova07\imperavi\actions\UploadFileAction',
+                'url' => 'http://localhost:8081/arabic/files/common/', // Directory URL address, where files are stored.
+                'path' => '@files/common/', // Or absolute path to directory where files are stored.
+            ],
+            'file-upload' => [
+                'class' => 'vova07\imperavi\actions\UploadFileAction',
+                'url' => 'http://localhost:8081/arabic/files/common/', // Directory URL address, where files are stored.
+                'path' => '@files/common/', // Or absolute path to directory where files are stored.
+                'uploadOnlyImage' => false, // For any kind of files uploading.
+            ],
+            'files-get' => [
+                'class' => 'vova07\imperavi\actions\GetFilesAction',
+                'url' => 'http://localhost:8081/arabic/files/common/', // Directory URL address, where files are stored.
+                'path' => '@files/common/', // Or absolute path to directory where files are stored.
+                'options' => ['only' => ['*.txt', '*.md']], // These options are by default.
+            ],
+            'file-delete' => [
+                'class' => 'vova07\imperavi\actions\DeleteFileAction',
+                'url' => 'http://localhost:8081/arabic/files/common/', // Directory URL address, where files are stored.
+                'path' => '@files/common/', // Or absolute path to directory where files are stored.
             ],
         ];
     }
