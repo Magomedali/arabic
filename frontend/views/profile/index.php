@@ -7,6 +7,7 @@ $this->title = Yii::t('profile',"PERSONAL_PAGE");
 $this->params['breadcrumbs'][] = $this->title;
 
 $user = \Yii::$app->user->identity;
+
 ?>
 <div class="row">
 	<div class="col-lg-4">

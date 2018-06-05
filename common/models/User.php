@@ -7,7 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use common\base\ActiveRecord;
 use yii\web\IdentityInterface;
 use common\enums\Token;
-use common\models\Session;
+use common\models\LearningProcess;
 
 /**
  * User model
@@ -355,24 +355,14 @@ class User extends ActiveRecord implements IdentityInterface
 
 
 
-    // public function saveHistory($defaultAttr = array()){
-    //     return parent::saveHistory($defaultAttr);
-    // }
+    public function getCurrentLesson(){
+        $lesson = Lesson::find()
+                    ->innerJoin(['lp'=>LearningProcess::tableName()]," lp.lesson_id = lesson.id")
+                    ->where(['lp.user_id'=>$this->id])->orderBy(['lesson.number'=>SORT_DESC])
+                    ->one();
 
+        if(isset($lesson->id)) return $lesson;
 
-    public function getActualSessions(){
-        if($this->id){
-            return Session::find()->where(['client_id'=>$this->id,'actual'=>1])->orderBy(["id"=>SORT_DESC])->all();
-        }
-
-        return false;
-    }
-
-
-
-    public function getActualSessionById($id){
-        if(!$id) return false;
-
-        return Session::find()->where(['client_id'=>$this->id,'actual'=>1,'id'=>$id])->one();
+        return Level::find()->orderBy(['position'=>SORT_ASC])->one();
     }
 }
