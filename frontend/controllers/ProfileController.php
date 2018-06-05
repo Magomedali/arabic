@@ -53,50 +53,13 @@ class ProfileController extends Controller{
 		if(Yii::$app->user->isGuest)
 			return $this->redirect(["site/login"]);
 
-		$sessionModel = new SessionForm;
-		$post = Yii::$app->request->post();
-
-		if($post && isset($post['SessionForm'])){
-			if($sessionModel->load($post) && $sessionModel->start()){
-				Yii::$app->session->setFlash('success',Yii::t('profile',"SESSION_REGISTERED"));
-				return $this->redirect(["profile/index"]);
-			}else{
-				Yii::$app->session->setFlash('danger',Yii::t('profile',"SESSION_REGISTERED_ERROR"));
-			}
-		}
-
-		if($post && isset($post['Stop'])){
-			$id= (int)$post['Stop']['session_id'];
-			$session = Yii::$app->user->identity->getActualSessionById($id);
-
-			if($session && isset($session->id)){
-				if($session->stop()){
-					Yii::$app->session->setFlash('success',Yii::t('profile',"SESSION_SEND_REQUEST_STOP"));
-					
-				}else{
-					Yii::$app->session->setFlash('danger',Yii::t('profile',"SESSION_NOT_SENDED_REQUEST_STOP"));
-				}
-			}else{
-				Yii::$app->session->setFlash('danger',Yii::t('profile',"SESSION_NOT_FOUNDED"));
-			}
-			return $this->redirect(["profile/index"]);
-		}
-
-		return $this->render("index",["sessionModel"=>$sessionModel]);
-	}
-
-
-
-	public function actionStory(){
-
 		
-		$report = new UserSessionsStory;
 
-		$dataProvider = $report->search(Yii::$app->request->queryParams);
-
-		return $this->render("story",['dataProvider'=>$dataProvider,'report'=>$report]);
-
+		return $this->render("index",[]);
 	}
+
+
+
 
 
 

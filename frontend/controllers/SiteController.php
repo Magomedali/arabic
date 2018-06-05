@@ -5,7 +5,7 @@ use Yii;
 use yii\base\InvalidParamException;
 use yii\web\{BadRequestHttpException,Controller};
 use yii\filters\{VerbFilter,AccessControl};
-use common\models\{User};
+use common\models\{User,Level};
 use frontend\models\{LoginForm,SignupForm,ConfirmUser,ResetPasswordForm,PasswordResetRequestForm};
 
 
@@ -84,7 +84,10 @@ class SiteController extends Controller
      */
     public function actionIndex(){   
         
-        return $this->render('index',['signUpModel'=>new SignupForm()]);
+
+        $levels = Level::find()->orderBy(['position'=>SORT_DESC])->all();
+
+        return $this->render('index',['levels'=>$levels,'signUpModel'=>new SignupForm()]);
     }
 
 

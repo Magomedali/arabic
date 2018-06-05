@@ -12,18 +12,13 @@ $this->params['breadcrumbs'][] = [
 
 $this->params['breadcrumbs'][] = [
 		'label' => Yii::t("level","LEVEL"),
-		'url'   => Url::to(['level/view','id'=>$model->level])
+		'url'   => Url::to(['level/lessons','id'=>$model->level])
 ];
 
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
 	<div class="col-xs-12 blocks">
-
-		<?php
-			echo Html::a(Yii::t("LESSON","UPDATE"),['lesson/form','id'=>$model->id],['class'=>'btn btn-primary']);
-		?>
-
 		<?php
 			$blocks = $model->blocks;
 			if(is_array($blocks)){

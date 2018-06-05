@@ -13,10 +13,31 @@ $this->title = \Yii::$app->name;
 </div>
 <div class="row">
 	<div class="col-xs-8">
-		<div id="map">
+		<?php if(count($levels)){
+			?>
+			<table class="table table-bordered table-collapsed">
+				<tr>
+					<th>#</th>
+					<th>Уровень</th>
+					<th>Действие</th>
+				</tr>	
 			
-		</div>
+			<?php
+			foreach ($levels as $key => $l) {
+				?>
+				<tr>
+					<td><?php echo $l->position?></td>
+					<td><?php echo $l->title?></td>
+					<td><?php echo Html::a("Открыть",['level/lessons','id'=>$l->id])?></td>
+				</tr>
+				<?php
+			}
+			?>
+			</table>
+			<?php
+		}?>
 	</div>
+	<?php if(\Yii::$app->user->isGuest){?>
 	<div class="col-xs-4">
 		<?php $form = ActiveForm::begin(['action'=>['site/signup'],'id' => 'form-signup']); ?>
 
@@ -36,4 +57,5 @@ $this->title = \Yii::$app->name;
                 </div>
         <?php ActiveForm::end(); ?>
 	</div>
+	<?php } ?>
 </div>

@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
 	<div class="col-xs-12">
-		<h2>Edit: <?php echo Html::encode($model->title); ?></h2> 
+		<h2>Edit: <?php echo Html::encode($model->title); ?> <?php echo Html::a(Yii::t("lesson",'VIEW'),['lesson/view','id'=>$model->id],['class'=>'btn btn-primary'])?></h2> 
 	</div>
 	<div class="col-xs-12 formEditlesson">
 		<?php $form = ActiveForm::begin(['id'=>'formEditlesson']);?>

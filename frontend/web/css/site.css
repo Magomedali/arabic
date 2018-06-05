@@ -118,3 +118,32 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.blocks{
+
+}
+
+    .block{
+        margin:10px 0px 50px 0px;
+    }
+
+        .elements{
+
+        }
+
+            .element{
+
+            }
+
+                .element_text{
+
+                }
+
+                .element_image{
+                    text-align: center;
+                }
+
+                .element_audio{
+                    text-align: center;
+                }
+
