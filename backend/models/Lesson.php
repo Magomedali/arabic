@@ -10,7 +10,20 @@ class Lesson extends cLesson
 {
 
 	
+	public function addBlock($blockParams){
+        $block = new Block;
+        
+        if(isset($blockParams['Block'])){
 
+            $block->load($blockParams);
+            $block->save();
+            
+            return $block;
+        }
+
+        return false;
+
+    }
 
 }
 ?>

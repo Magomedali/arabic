@@ -4,7 +4,7 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\base\InvalidParamException;
-use yii\web\{BadRequestHttpException,Controller};
+use yii\web\{BadRequestHttpException,Controller,HttpException};
 use yii\filters\{VerbFilter,AccessControl};
 use common\models\{User,Level,Lesson};
 
@@ -19,7 +19,7 @@ class LevelController extends Controller{
 				'class'=>AccessControl::className(),
 				'rules'=>[
 					[
-						'actions'=>['index','lessons','lesson'],
+						'actions'=>['index','lessons','lesson','level-completed'],
 						'allow'=>true,
 						'roles'=>[],
 					]
@@ -53,6 +53,8 @@ class LevelController extends Controller{
 	}
 
 
+
+
 	public function actionLessons($id){
 		
 		if(!$id){
@@ -68,6 +70,26 @@ class LevelController extends Controller{
 
         return $this->render("lessons",['model'=>$model,'lessons'=>$lessons]);
 	}
+
+
+
+    public function actionLevelCompleted($id){
+        
+        if(!$id){
+            throw new HttpException(404,'Document Does Not Exist');
+        }
+
+        $model = Level::findOne((int)$id);
+
+        if(!isset($model->id)){
+            throw new HttpException(404,'Document Does Not Exist');
+        }
+        
+
+        return $this->render("levelCompleted",['model'=>$model]);
+    }
+    
+
 
 
 	public function actionLesson($id){
@@ -87,5 +109,8 @@ class LevelController extends Controller{
         	'model'=>$model
         ]);
 	}
+
+
+
 }
 ?>

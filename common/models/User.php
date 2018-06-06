@@ -355,14 +355,72 @@ class User extends ActiveRecord implements IdentityInterface
 
 
 
+
+
     public function getCurrentLesson(){
         $lesson = Lesson::find()
                     ->innerJoin(['lp'=>LearningProcess::tableName()]," lp.lesson_id = lesson.id")
-                    ->where(['lp.user_id'=>$this->id])->orderBy(['lesson.number'=>SORT_DESC])
+                    ->innerJoin(['l'=>Level::tableName()]," l.id = lesson.level")
+                    ->where(['lp.user_id'=>$this->id])->orderBy(['l.position'=>SORT_DESC,'lesson.number'=>SORT_DESC])
                     ->one();
 
         if(isset($lesson->id)) return $lesson;
 
-        return Level::find()->orderBy(['position'=>SORT_ASC])->one();
+        return false;
     }
+    
+
+
+
+
+    public function getMyNextLesson(){
+
+        $prev = $this->getCurrentLesson();
+
+        if(isset($prev->id)) return $prev->nextLesson;
+
+        $level = new Level();
+        $firstLevel = $level->firstLevel;
+
+        if($firstLevel) return $firstLevel->firstLesson;
+        return false;
+    }
+
+
+    
+
+
+    public function lessonIsProcessed($l_id){
+        $lp = LearningProcess::find()->where(['lesson_id'=>$l_id,'user_id'=>$this->id])->one();
+
+        return isset($lp->id);
+    }
+
+
+
+
+
+    public function processLesson(Lesson $lesson){
+        
+        if(isset($lesson->id)){
+
+            if($this->lessonIsProcessed($lesson->id)) return true;
+
+            $lp = new LearningProcess;
+            $lp->user_id = $this->id;
+            $lp->lesson_id = $lesson->id;
+            $lp->created = date("Y-m-d\TH:i:s",time());
+
+            return $lp->save();
+
+        }
+
+        return false;
+    }
+
+
+    
+
+
+
 }

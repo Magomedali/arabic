@@ -147,3 +147,14 @@ a.desc:after {
                     text-align: center;
                 }
 
+
+.previous_lesson{
+ margin-right: 20px; 
+}
+
+.lesson-title{
+}
+
+.lesson-title h2{
+ margin:0px;
+}

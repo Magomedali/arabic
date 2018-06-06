@@ -48,5 +48,43 @@ class Level extends ActiveRecord
     public function getLessons(){
         return $this->hasMany(Lesson::className(),['level'=>'id']);
     }
+
+
+
+    public function getFirstLevel(){
+        return self::find()->orderBy(['position'=>SORT_ASC])->one();
+    }
+
+
+
+    public function getLastLevel(){
+        return self::find()->orderBy(['position'=>SORT_DESC])->one();
+    }
+
+
+
+    public function getFirstLesson(){
+        return Lesson::find()->where(['level'=>$this->id])->orderBy(['number'=>SORT_ASC])->one();
+    }
+
+
+
+    public function getLastLesson(){
+        return Lesson::find()->where(['level'=>$this->id])->orderBy(['number'=>SORT_DESC])->one();
+    }
+
+
+
+    public function getNextLevel(){
+        return self::find()->andFilterWhere(['>','position',$this->position])->orderBy(['position'=>SORT_ASC])->one();
+    }
+
+
+
+
+    public function getPrevLevel(){
+        return self::find()->andFilterWhere(['<','position',$this->position])->orderBy(['position'=>SORT_DESC])->one();
+    }
+
 }
 ?>

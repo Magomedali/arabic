@@ -64,9 +64,14 @@ class Lesson extends ActiveRecord
     }
 
 
+
+
     public function getLevelModel(){
         return $this->hasOne(Level::className(),['id'=>'level']);
     }
+
+
+
 
 
     public function getBlocks(){
@@ -76,19 +81,65 @@ class Lesson extends ActiveRecord
 
 
 
-    public function addBlock($blockParams){
-        $block = new Block;
-        
-        if(isset($blockParams['Block'])){
 
-            $block->load($blockParams);
-            $block->save();
-            
-            return $block;
+    public function getFirstLesson(){
+        return self::find()->where(['level'=>$this->level])->orderBy(['number'=>SORT_ASC])->one();
+    }
+
+
+
+
+
+
+    public function getLastLesson(){
+        return self::find()->where(['level'=>$this->level])->orderBy(['number'=>SORT_DESC])->one();
+    }
+
+
+
+
+
+
+    public function isLast(){
+
+        $ll = $this->lastLesson;
+        if(isset($ll->id)){
+            return $ll->id == $this->id;
         }
 
         return false;
 
     }
+
+
+
+
+
+
+    public function isFirst(){
+        $fl = $this->firstLesson;
+        if(isset($fl->id)){
+            return $fl->id == $this->id;
+        }
+
+        return false;
+    }
+
+
+
+
+    public function getNextLesson(){
+        return self::find()->where(['level'=>$this->level])->andFilterWhere(['>','number',$this->number])->orderBy(['number'=>SORT_ASC])->one();
+    }
+
+
+
+
+    public function getPrevLesson(){
+        return self::find()->where(['level'=>$this->level])->andFilterWhere(['<','number',$this->number])->orderBy(['number'=>SORT_DESC])->one();
+    }
+
+
+
 }
 ?>

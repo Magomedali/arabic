@@ -2,6 +2,7 @@
 
 use yii\helpers\{Html,Url};
 use yii\bootstrap\ActiveForm;
+use common\models\{Level,Lesson};
 
 $this->title = \Yii::$app->name;
 
@@ -12,31 +13,7 @@ $this->title = \Yii::$app->name;
 	</div>
 </div>
 <div class="row">
-	<div class="col-xs-8">
-		<?php if(count($levels)){
-			?>
-			<table class="table table-bordered table-collapsed">
-				<tr>
-					<th>#</th>
-					<th>Уровень</th>
-					<th>Действие</th>
-				</tr>	
-			
-			<?php
-			foreach ($levels as $key => $l) {
-				?>
-				<tr>
-					<td><?php echo $l->position?></td>
-					<td><?php echo $l->title?></td>
-					<td><?php echo Html::a("Открыть",['level/lessons','id'=>$l->id])?></td>
-				</tr>
-				<?php
-			}
-			?>
-			</table>
-			<?php
-		}?>
-	</div>
+	
 	<?php if(\Yii::$app->user->isGuest){?>
 	<div class="col-xs-4">
 		<?php $form = ActiveForm::begin(['action'=>['site/signup'],'id' => 'form-signup']); ?>
@@ -56,6 +33,44 @@ $this->title = \Yii::$app->name;
                     <?php echo Html::a('Login',['site/login'],['class' => 'btn btn-success',]) ?>
                 </div>
         <?php ActiveForm::end(); ?>
+	</div>
+	<?php }else{ ?>
+	<div class="col-xs-8">
+		<?php 
+
+			$user = Yii::$app->user->identity;
+			$lesson = $user->getCurrentLesson();
+			if(isset($lesson->id)){
+				?>
+
+				<div>
+					<?php echo Html::a("Продолжить обучение",['level/lesson','id'=>$lesson->id],['class'=>'btn btn-success']);?>
+				</div>
+
+				<?php
+			}else{
+				$level = new Level();
+				$firstLevel = $level->firstLevel;
+
+				if(isset($firstLevel->id)){
+				?>
+
+				<div>
+					<?php echo Html::a("Начать обучение",['level/lessons','id'=>$firstLevel->id],['class'=>'btn btn-success']);?>
+				</div>
+
+				<?php
+				}else{
+				?>
+
+				<div>
+					<h3>Нет доступных курсов!</h3>
+				</div>
+
+				<?php
+				}
+			}
+		?>
 	</div>
 	<?php } ?>
 </div>

@@ -26,7 +26,7 @@ class LearningProcess extends ActiveRecord
     public function rules()
     {
         return [
-            
+            [['user_id','lesson_id'],'required']
         ];
     }
 
