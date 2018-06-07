@@ -346,9 +346,9 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function assignRoleBase(){
 
-        $auth = Yii::$app->authManager;
-        $authorRole = $auth->getRole('base');
-        $auth->assign($authorRole, $this->getId());
+        //$auth = Yii::$app->authManager;
+        //$authorRole = $auth->getRole('base');
+        //$auth->assign($authorRole, $this->getId());
 
         return $this;
     }

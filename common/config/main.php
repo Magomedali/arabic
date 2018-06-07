@@ -39,14 +39,14 @@ return [
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',
-            'transport' => [
-                'class' => 'Swift_SmtpTransport',
-                'host' => $smtp['host'],  // e.g. smtp.mandrillapp.com or smtp.gmail.com
-                'username' => $smtp['username'],
-                'password' => $smtp['password'],
-                'port' => $smtp['port'], // Port 25 is a very common port too
-                'encryption' => $smtp['encryption'], // It is often used, check your provider or mail server specs
-            ],
+            // 'transport' => [
+            //     'class' => 'Swift_SmtpTransport',
+            //     'host' => $smtp['host'],  // e.g. smtp.mandrillapp.com or smtp.gmail.com
+            //     'username' => $smtp['username'],
+            //     'password' => $smtp['password'],
+            //     'port' => $smtp['port'], // Port 25 is a very common port too
+            //     'encryption' => $smtp['encryption'], // It is often used, check your provider or mail server specs
+            // ],
         ],
         'assetManager'=>[
             'bundles'=>[

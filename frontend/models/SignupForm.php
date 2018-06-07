@@ -103,7 +103,7 @@ class SignupForm extends Model
 
             ConfirmUser::sendMailConfirm($user);
 
-            ConfirmUser::sendPhoneSmsConfirm($user,$pincode);
+            //ConfirmUser::sendPhoneSmsConfirm($user,$pincode);
 
             return $user;
         }
