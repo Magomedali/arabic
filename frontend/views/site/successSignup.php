@@ -18,7 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <p>Для входа в личный кабинет, необходимо подтвердить вашу учетную запись, инструкция по подтверждению учетной записи была выслана на вашу почту <?php echo Html::encode($model->email); ?> и на номер вашего телефона <?php echo Html::encode($model->phone); ?></p>
             <p>Для повторного получения инструкции подтверждения перейдите по соответствующей ссылке</p>
             <p><?php echo Html::a("Отправить на почту",['site/send-confirm-email','e'=>$model->email]);?></p>
-            <p><?php echo Html::a("Отправить на телефон",['site/send-confirm-phone','p'=>$model->phone]);?></p>
         </div>
     </div>
 </div>
