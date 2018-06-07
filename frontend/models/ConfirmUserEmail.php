@@ -19,7 +19,7 @@ class ConfirmUserEmail extends \frontend\models\ConfirmUser{
 		$this->_user->email_confirmed = true;
 		$this->_user->removeEmailConfirmToken();
 
-		return $this->_user->save(true,false);
+		return $this->_user->save(false);
 	}
 
 

@@ -33,12 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 После регистрации вы не подтвердили почтовый адрес. Для входа в личный кабинет необхдимо его подтведить. <?= Html::a('Получить инструкцию подтверждения на почту '.$model->login, ['site/send-confirm-email','e'=>$model->login]); ?>.
                             </div>
                             <?php
-                        }elseif($model->unConfirmedPhone()){
-                            ?>
-                            <div style="color:#999;margin:1em 0">
-                                После регистрации вы не подтвердили номер телефона. Для входа в личный кабинет необхдимо его подтведить. <?= Html::a('Получить инструкцию подтверждения на телефон '.$model->login, ['site/send-confirm-phone','p'=>$model->login]); ?>.
-                            </div>
-                            <?php
                         }
                 ?>
 
@@ -56,13 +50,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
             <?php ActiveForm::end(); ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-5">
-            <?php
-                echo Html::a("Вход через Егпп",['site/auth-egpp']);
-            ?>
         </div>
     </div>
 </div>

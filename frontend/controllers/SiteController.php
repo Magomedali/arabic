@@ -235,7 +235,7 @@ class SiteController extends Controller
         }
 
         if($model->confirm()){
-            Yii::$app->session->setFlash('success','Ваш адрес электронной почты подтвержден, теперь вы можете заходить в личный кабинет используя вас E-mail');
+            Yii::$app->session->setFlash('success','Ваш адрес электронной почты подтвержден, теперь вы можете заходить в личный кабинет используя ваш E-mail');
         }
 
         return $this->redirect(["site/login"]);
@@ -243,7 +243,31 @@ class SiteController extends Controller
 
 
 
+    /**
+     * Resets password.
+     *
+     * @param string $token
+     * @return mixed
+     * @throws BadRequestHttpException
+     */
+    public function actionSendConfirmEmail($e)
+    {
+        if(!$e || $e == null)
+            return $this->redirect(["site/login"]);
 
+        $user = User::findByLogin($e);
+
+        if(!$user || !isset($user->id))
+            return $this->redirect(["site/login"]);
+
+
+
+        if(ConfirmUser::confirmEmail($user)){
+            Yii::$app->session->setFlash('success','Инструкция подтверждения учетной записи отправлена вам электронную почту. Проверьте пожалуйста свою почту.');
+        }
+
+        return $this->redirect(["profile/index"]);
+    }
 
     // public function actionConfirmPhone(){
         
