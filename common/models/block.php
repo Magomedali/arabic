@@ -9,8 +9,6 @@ use common\models\{Lesson,Level};
 class Block extends ActiveRecord
 {
 
-
-
     const SCENARIO_CREATE = 'create';
 
 	/**
