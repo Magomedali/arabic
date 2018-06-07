@@ -28,6 +28,11 @@ class LessonController extends Controller
                         'allow' => true,
                         'roles' => ['superadmin'],
                     ],
+                    [
+                        'actions' => ['images-get','image-upload','file-upload','files-get','file-delete'],
+                        'allow' => true,
+                        'roles' => ['superadmin'],
+                    ],
                 ],
             ]
         ];
@@ -41,6 +46,34 @@ class LessonController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
+            ],
+            'images-get'=>[
+                'class' => 'vova07\imperavi\actions\GetImagesAction',
+                'url' => 'http://localhost:8081/arabic/files/lesson/',
+                'path' => '@files/lesson/',
+                //'options' => ['only' => ['*.jpg', '*.jpeg', '*.png', '*.gif', '*.mp3','*.mpeg']],
+            ],
+            'image-upload' => [
+                'class' => 'vova07\imperavi\actions\UploadFileAction',
+                'url' => 'http://localhost:8081/arabic/files/lesson/', // Directory URL address, where files are stored.
+                'path' => '@files/lesson/', // Or absolute path to directory where files are stored.
+            ],
+            'file-upload' => [
+                'class' => 'vova07\imperavi\actions\UploadFileAction',
+                'url' => 'http://localhost:8081/arabic/files/lesson/', // Directory URL address, where files are stored.
+                'path' => '@files/lesson/', // Or absolute path to directory where files are stored.
+                'uploadOnlyImage' => false, // For any kind of files uploading.
+            ],
+            'files-get' => [
+                'class' => 'vova07\imperavi\actions\GetFilesAction',
+                'url' => 'http://localhost:8081/arabic/files/lesson/', // Directory URL address, where files are stored.
+                'path' => '@files/lesson/', // Or absolute path to directory where files are stored.
+                'options' => ['only' => ['*.txt', '*.md']], // These options are by default.
+            ],
+            'file-delete' => [
+                'class' => 'vova07\imperavi\actions\DeleteFileAction',
+                'url' => 'http://localhost:8081/arabic/files/lesson/', // Directory URL address, where files are stored.
+                'path' => '@files/lesson/', // Or absolute path to directory where files are stored.
             ],
         ];
     }

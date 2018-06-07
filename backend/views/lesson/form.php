@@ -31,9 +31,41 @@ $this->params['breadcrumbs'][] = $this->title;
 			</div>
 			<div class="col-xs-3">
 				<?php echo $form->field($model,"title")->textInput()?>
+			</div>			<div class="col-xs-3">
+				<?php echo $form->field($model,'isPublic')->checkbox();?>
 			</div>
 			<div class="col-xs-3">
 				<?php echo Html::submitButton(Yii::t('lesson','EDIT_LESSON'),['class'=>'btn btn-success'])?>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<?php echo $form->field($model,'desc')->widget(Widget::className(), [
+						'model'=>$model,
+						'attribute'=>'desc',
+						
+					    'settings' => [
+					        'lang' => 'ru',
+					        'minHeight' => 200,
+					        'imageUpload' => Url::to(['/level/image-upload']),
+        					'imageManagerJson' => Url::to(['/level/images-get']),
+        					'fileUpload' => Url::to(['/level/file-upload']),
+        					'fileManagerJson' => Url::to(['/level/files-get']),
+        					'imageDelete' => Url::to(['/level/file-delete']),
+					        'plugins' => [
+					        	'imagemanager',// => 'vova07\imperavi\bundles\ImageManagerAsset',
+					        	'filemanager',// => 'vova07\imperavi\bundles\FileManagerAsset',
+					            'fullscreen',
+					            'fontsize',
+					            'table',
+					            'textdirection',
+					            'textexpander',
+					            'video',
+					            'fontcolor',
+					            'counter'
+					        ]
+					    ]
+					]);?>
 			</div>
 		</div>
 		<?php ActiveForm::end();?>

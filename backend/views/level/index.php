@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	                        }
 					],
 					'title',
-					'desc',
+					'isPublic',
 					'position',
 					[
 		                'class' => 'yii\grid\ActionColumn',

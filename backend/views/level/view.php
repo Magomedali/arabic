@@ -3,6 +3,7 @@
 use yii\helpers\{Html,Url};
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
+use vova07\imperavi\Widget;
 
 $this->title = Yii::t('level',"LEVEL_TITLE",['title'=>$model->title]);
 $this->params['breadcrumbs'][] = [
@@ -34,13 +35,12 @@ $this->params['breadcrumbs'][] = $this->title;
 				<td><?php echo $model->getAttributeLabel("title");?></td><td><?php echo Html::encode($model->title);?></td>
 			</tr>
 			<tr>
-				<td><?php echo $model->getAttributeLabel("desc");?></td><td><?php echo Html::encode($model->desc);?></td>
-			</tr>
-			<tr>
 				<td><?php echo $model->getAttributeLabel("position");?></td><td><?php echo Html::encode($model->position);?></td>
 			</tr>
-			
 		</table>
+	</div>
+	<div class="col-xs-9">
+		<?php echo $model->desc;?>
 	</div>
 </div>
 
@@ -58,9 +58,42 @@ $this->params['breadcrumbs'][] = $this->title;
 			<div class="col-xs-3">
 				<?php echo $form->field($lesson,"number")->textInput(['type'=>'number','min'=>1])?>
 			</div>
+			<div class="col-xs-1">
+				<?php echo $form->field($lesson,'isPublic')->checkbox();?>
+			</div>
 			<div class="col-xs-3">
 				<?php echo $form->field($lesson,"level")->hiddenInput(['value'=>$model->id])->label(false)?>
 				<?php echo Html::submitButton(Yii::t('level','ADD_LESSON'),['class'=>'btn btn-success'])?>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<?php echo $form->field($lesson,'desc')->widget(Widget::className(), [
+						'model'=>$lesson,
+						'attribute'=>'desc',
+						
+					    'settings' => [
+					        'lang' => 'ru',
+					        'minHeight' => 200,
+					        'imageUpload' => Url::to(['/lesson/image-upload']),
+        					'imageManagerJson' => Url::to(['/lesson/images-get']),
+        					'fileUpload' => Url::to(['/lesson/file-upload']),
+        					'fileManagerJson' => Url::to(['/lesson/files-get']),
+        					'imageDelete' => Url::to(['/lesson/file-delete']),
+					        'plugins' => [
+					        	'imagemanager',// => 'vova07\imperavi\bundles\ImageManagerAsset',
+					        	'filemanager',// => 'vova07\imperavi\bundles\FileManagerAsset',
+					            'fullscreen',
+					            'fontsize',
+					            'table',
+					            'textdirection',
+					            'textexpander',
+					            'video',
+					            'fontcolor',
+					            'counter'
+					        ]
+					    ]
+					]);?>
 			</div>
 		</div>
 		<?php ActiveForm::end();?>
@@ -88,6 +121,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					],
 					'title',
 					'number',
+					'isPublic',
 					[
 		                'class' => 'yii\grid\ActionColumn',
 		                'template' => '{view}&nbsp&nbsp{form}&nbsp&nbsp{delete}',
