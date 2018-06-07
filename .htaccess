@@ -1,1 +1,13 @@
-Options All -Indexes
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^arabic.web-ali.ru$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.arabic.web-ali.ru$
+RewriteCond %{REQUEST_URI} !frontend/web/
+RewriteCond %{REQUEST_URI} !files/
+RewriteRule (.*) /frontend/web/$1 [L]
+
+RewriteCond %{HTTP_HOST} ^admin.arabic.web-ali.ru$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.admin.arabic.web-ali.ru$
+RewriteCond %{REQUEST_URI} !backend/web/
+RewriteCond %{REQUEST_URI} !files/
+RewriteRule (.*) /backend/web/$1 [L]
