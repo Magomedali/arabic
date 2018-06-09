@@ -76,7 +76,7 @@ class ProfileController extends Controller{
 				Yii::$app->session->setFlash('success',Yii::t('profile',"YOU_DATA_UPDATED_SUCCESSFULL"));
 				return $this->redirect(["profile/index"]);
 			}else{
-				Yii::$app->session->setFlash('danger',Yii::t('profile',"YOU_DATA_DID_N0T_UPDAT_SUCCESSFULL"));
+				Yii::$app->session->setFlash('danger',Yii::t('profile',"YOU_DATA_DID_N0T_UPDATED_SUCCESSFULL"));
 			}
 		}
 

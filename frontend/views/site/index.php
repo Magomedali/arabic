@@ -4,7 +4,7 @@ use yii\helpers\{Html,Url};
 use yii\bootstrap\ActiveForm;
 use common\models\{Level,Lesson};
 
-$this->title = \Yii::$app->name;
+$this->title = Yii::t('site',Yii::$app->name);
 
 ?>
 <div class="row">

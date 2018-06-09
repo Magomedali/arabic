@@ -31,8 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
 			</div>
 			<div class="col-xs-3">
 				<?php echo $form->field($model,"title")->textInput()?>
-			</div>			<div class="col-xs-3">
+			</div>			
+			<div class="col-xs-2">
 				<?php echo $form->field($model,'isPublic')->checkbox();?>
+			</div>			
+			<div class="col-xs-2">
+				<?php echo $form->field($model,'showDesc')->checkbox();?>
 			</div>
 			<div class="col-xs-3">
 				<?php echo Html::submitButton(Yii::t('lesson','EDIT_LESSON'),['class'=>'btn btn-success'])?>
@@ -95,10 +99,13 @@ $this->params['breadcrumbs'][] = $this->title;
 								<div class="col-xs-2">
 										<?php echo $form->field($b,'position')->textInput(['type'=>'number','min'=>1,'style'=>"width: 85px;"]); ?>
 								</div>
-								<div class="col-xs-1">
+								<div class="col-xs-2">
 									<?php echo $form->field($b,'isPublic')->checkbox(['id'=>'block#'.$b['id']]);?>
 								</div>
-								<div class="col-xs-3 col-xs-offset-5">
+								<div class="col-xs-2">
+									<?php echo $form->field($b,'displayInline')->checkbox(['id'=>'block#'.$b['id']]);?>
+								</div>
+								<div class="col-xs-3 col-xs-offset-2">
 									<div class="btn-group">
 										<?php echo Html::submitbutton(Yii::t("lesson",'SAVE_BLOCK'),['class'=>'btn btn-primary']); ?>
 										<?php echo Html::a(Yii::t("lesson",'REMOVE_BLOCK'),['lesson/remove-block','id'=>$b['id']],['class'=>'btn btn-danger','data-confirm'=>Yii::t('lesson','REMOVE_BLOCK_CONFIRM')])?>
@@ -158,12 +165,16 @@ $this->params['breadcrumbs'][] = $this->title;
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-xs-5">
 					<?php echo $form->field($newblock,'position')->textInput(['type'=>'number','min'=>1]); ?>
 				</div>
 				
-				<div class="col-xs-3">
+				<div class="col-xs-2">
 					<?php echo $form->field($newblock,'isPublic')->checkbox();?>
+				</div>
+
+				<div class="col-xs-2">
+					<?php echo $form->field($newblock,'displayInline')->checkbox();?>
 				</div>
 
 				<div class="col-xs-3">

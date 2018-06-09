@@ -2,7 +2,7 @@
 use yii\helpers\{Html,Url};
 use backend\models\Element;
 
-$this->title = Yii::t("lesson","LESSON_NAME",['name'=>$model->title]);
+$this->title = Yii::t("lesson","LESSON_TITLE",['title'=>$model->title]);
 
 
 $this->params['breadcrumbs'][] = [
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="col-xs-12 blocks">
 
 		<?php
-			echo Html::a(Yii::t("LESSON","UPDATE"),['lesson/form','id'=>$model->id],['class'=>'btn btn-primary']);
+			echo Html::a(Yii::t("site","TO_UPDATE"),['lesson/form','id'=>$model->id],['class'=>'btn btn-primary']);
 		?>
 
 		<?php

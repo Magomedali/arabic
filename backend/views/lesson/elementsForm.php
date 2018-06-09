@@ -25,82 +25,95 @@ if(is_array($block_elements) && count($block_elements)){
 			<div class="col-xs-1">	
 				<?php echo $form->field($ble,'position')->textInput(['min'=>1,'type'=>'number']); ?>
 			</div>
-			<div class="col-xs-6">
-				<?php //echo $form->field($ble,'content')->textarea(); ?>
-				<?php echo $ble['type'] == Element::TYPE_TEXT ? $form->field($ble,'content')->widget(Widget::className(), [
-						'model'=>$ble,
-						'attribute'=>'content',
-						'options'=>[
-							'id'=>"textareaContent_{$ble['block']}_{$key}"
-						],
-					    'settings' => [
-					        'lang' => 'ru',
-					        'minHeight' => 200,
-					        'imageUpload' => Url::to(['/site/image-upload']),
-        					'imageManagerJson' => Url::to(['/site/images-get']),
-        					'fileUpload' => Url::to(['/site/file-upload']),
-        					'fileManagerJson' => Url::to(['/site/files-get']),
-        					'imageDelete' => Url::to(['/site/file-delete']),
-					        'plugins' => [
-					        	'imagemanager',// => 'vova07\imperavi\bundles\ImageManagerAsset',
-					        	'filemanager',// => 'vova07\imperavi\bundles\FileManagerAsset',
-					            'fullscreen',
-					            'fontsize',
-					            'table',
-					            'textdirection',
-					            'textexpander',
-					            'video',
-					            'fontcolor',
-					            'counter'
-					        ]
-					    ]
-					]) : "" ;?>
-			</div>
 
-			<div class="col-xs-3">	
-				<?php
-					if($ble['type'] == Element::TYPE_VIDEO){
-						echo $form->field($ble,"files")->fileInput();
-					}elseif($ble['type'] == Element::TYPE_AUDIO){
-						echo $form->field($ble,"files")->fileInput();
-						
-						if($ble['file_name']){
+			<?php if($ble['type'] == Element::TYPE_TEXT){ ?>
+				<div class="col-xs-6">
+					<?php echo  $form->field($ble,'content')->widget(Widget::className(), [
+							'model'=>$ble,
+							'attribute'=>'content',
+							'options'=>[
+								'id'=>"textareaContent_{$ble['block']}_{$key}"
+							],
+						    'settings' => [
+						        'lang' => 'ru',
+						        'minHeight' => 200,
+						        'imageUpload' => Url::to(['/site/image-upload']),
+	        					'imageManagerJson' => Url::to(['/site/images-get']),
+	        					'fileUpload' => Url::to(['/site/file-upload']),
+	        					'fileManagerJson' => Url::to(['/site/files-get']),
+	        					'imageDelete' => Url::to(['/site/file-delete']),
+						        'plugins' => [
+						        	'imagemanager',// => 'vova07\imperavi\bundles\ImageManagerAsset',
+						        	'filemanager',// => 'vova07\imperavi\bundles\FileManagerAsset',
+						            'fullscreen',
+						            'fontsize',
+						            'table',
+						            'textdirection',
+						            'textexpander',
+						            'video',
+						            'fontcolor',
+						            'counter'
+						        ]
+						    ]
+						]);?>
+				</div>
+			<?php }else{ ?>
 
-						?>
+				<div class="col-xs-6">	
+					<?php
+						if($ble['type'] == Element::TYPE_VIDEO){
+							echo $form->field($ble,"files")->fileInput();
+						}elseif($ble['type'] == Element::TYPE_AUDIO){
+							echo $form->field($ble,"files")->fileInput();
 							
-							<div>
-								<audio controls>
-									<source src="<?php echo $ble->file?>">
-									Ваш браузер не пожжерживает тег audio!
-								</audio>
-							</div>
-						<?php
-						}
+							if($ble['file_name']){
+							?>
+								<div>
+									<audio controls>
+										<source src="<?php echo $ble->file?>">
+										Ваш браузер не пожжерживает тег audio!
+									</audio>
+								</div>
+							<?php
+							}
 
-					}elseif($ble['type'] == Element::TYPE_IMAGE){
-					
-						echo $form->field($ble,"files")->fileInput();
+
+							echo $form->field($ble,"icon")->fileInput();
+							if($ble->audio_icon){
+							?>
+								<div>
+									<img src="<?php echo $ble->audio_icon_path?>">
+								</div>
+							<?php
+							}
+									
+						}elseif($ble['type'] == Element::TYPE_IMAGE){
 						
-						if($ble['file_name']){
-						
-						?>
+							echo $form->field($ble,"files")->fileInput();
 							
-							<div>
-								<img src="<?php echo $ble->file?>" width="150px">
-							</div>
-						<?php
+							if($ble['file_name']){
+							
+							?>
+								
+								<div>
+									<img src="<?php echo $ble->file?>" width="150px">
+								</div>
+							<?php
+							}
 						}
-					}
-				?>
-			</div>
+					?>
+				</div>
+			<?php } ?>
 
-			
+			<div class="col-xs-3">
+				<?php echo $form->field($ble,'isPublic')->checkbox();?>
+			</div>
 
 			<div class="col-xs-2 <?php echo $ble['type'] != Element::TYPE_TEXT ? "" : "col-xs-offset-3" ; ?>">
 				<div class="btn-group">
 					
 				<?php 
-					echo Html::submitInput("SAVE",['class'=>'btn btn-success']);
+					echo Html::submitInput(Yii::t('site','SAVE'),['class'=>'btn btn-success']);
 				
 					$class_remove = isset($ble['id']) ? "removeElementFromDb" : "removeElement";
 					$url = isset($ble['id']) ? ['lesson/remove-element','id'=>$ble['id']] : null;

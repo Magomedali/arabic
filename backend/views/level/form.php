@@ -4,7 +4,7 @@ use yii\helpers\{Html,Url};
 use yii\bootstrap\ActiveForm;
 use vova07\imperavi\Widget;
 
-$this->title = Yii::t("site","LEVEL_FROM");
+$this->title = Yii::t("level","LEVEL_FROM");
 
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -56,6 +56,9 @@ $this->params['breadcrumbs'][] = $this->title;
 		<div class="row">
 			<div class="col-xs-3">
 				<?php echo $form->field($model,"position")->textInput(['type'=>'number','min'=>1]);?>
+			</div>
+			<div class="col-xs-2">
+				<?php echo $form->field($model,'showDesc')->checkbox();?>
 			</div>
 			<div class="col-xs-3">
 				<?php echo $form->field($model,'isPublic')->checkbox();?>

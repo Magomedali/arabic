@@ -32,7 +32,7 @@ class Lesson extends ActiveRecord
             [['level','number','title'],'required'],
             [['number','level'],'integer'],
             ['desc','default','value'=>null],
-            ['isPublic','default','value' => true ],
+            [['isPublic','showDesc'],'default','value' => true ],
             ['number','checkExistsLesson']
         ];
     }
@@ -41,7 +41,7 @@ class Lesson extends ActiveRecord
 
     public function scenarios(){
     	return array_merge(parent::scenarios(),[
-            self::SCENARIO_CREATE => ['number','title','desc','isPublic','level']
+            self::SCENARIO_CREATE => ['number','title','desc','isPublic','showDesc','level']
     	]);
     }
 
@@ -80,10 +80,16 @@ class Lesson extends ActiveRecord
 
 
 
+    public function getPublicBlocks(){
+        return Block::find()->where(['lesson'=>$this->id,'isPublic'=>true])->all();
+    }
+
+
+
 
 
     public function getFirstLesson(){
-        return self::find()->where(['level'=>$this->level])->orderBy(['number'=>SORT_ASC])->one();
+        return self::find()->where(['level'=>$this->level,'isPublic'=>true])->orderBy(['number'=>SORT_ASC])->one();
     }
 
 
@@ -92,7 +98,7 @@ class Lesson extends ActiveRecord
 
 
     public function getLastLesson(){
-        return self::find()->where(['level'=>$this->level])->orderBy(['number'=>SORT_DESC])->one();
+        return self::find()->where(['level'=>$this->level,'isPublic'=>true])->orderBy(['number'=>SORT_DESC])->one();
     }
 
 
@@ -129,14 +135,14 @@ class Lesson extends ActiveRecord
 
 
     public function getNextLesson(){
-        return self::find()->where(['level'=>$this->level])->andFilterWhere(['>','number',$this->number])->orderBy(['number'=>SORT_ASC])->one();
+        return self::find()->where(['level'=>$this->level,'isPublic'=>true])->andFilterWhere(['>','number',$this->number])->orderBy(['number'=>SORT_ASC])->one();
     }
 
 
 
 
     public function getPrevLesson(){
-        return self::find()->where(['level'=>$this->level])->andFilterWhere(['<','number',$this->number])->orderBy(['number'=>SORT_DESC])->one();
+        return self::find()->where(['level'=>$this->level,'isPublic'=>true])->andFilterWhere(['<','number',$this->number])->orderBy(['number'=>SORT_DESC])->one();
     }
 
 

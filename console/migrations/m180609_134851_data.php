@@ -1,46 +1,69 @@
--- phpMyAdmin SQL Dump
--- version 4.6.6
--- https://www.phpmyadmin.net/
---
--- Хост: localhost
--- Время создания: Июн 04 2018 г., 23:40
--- Версия сервера: 5.5.54
--- Версия PHP: 7.0.16RC1
+<?php
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+use yii\db\Migration;
+
+/**
+ * Class m180609_134851_data
+ */
+class m180609_134851_data extends Migration
+{
+    /**
+     * @inheritdoc
+     */
+    public function safeUp()
+    {
+
+        $this->execute($this->sqlDataLevels());
+        $this->execute($this->sqlDataLessons());
+        $this->execute($this->sqlDataBlocks());
+        $this->execute($this->sqlDataElements());
 
 
--- --------------------------------------------------------
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function safeDown()
+    {
+        
+    }
 
 
---
--- Дамп данных таблицы `block`
---
+    public function sqlDataLevels(){
+        return <<<SQL
+        INSERT INTO `level` (`id`, `title`, `desc`, `isPublic`, `position`) VALUES
+        (1, 'Первый уровень', NULL, 1, 1);
+SQL;
+    }
 
 
+    public function sqlDataLessons(){
+       return <<<SQL
+       INSERT INTO `lesson` (`id`, `level`, `number`, `title`, `desc`, `isPublic`) VALUES
+        (1, 1, 1, 'Первый урок', NULL, 1),
+        (2, 1, 2, 'Второй урок', NULL, 1);
+SQL;
+    }
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `element`
---
+    public function sqlDataBlocks(){
+        return <<<SQL
+        INSERT INTO `block` (`id`, `lesson`, `position`, `isPublic`) VALUES
+        (8, 1, 1, 1),
+        (9, 1, 2, 0),
+        (10, 1, 3, 0),
+        (11, 1, 4, 0),
+        (12, 1, 5, 0),
+        (13, 1, 6, 0),
+        (14, 1, 7, 0);
+SQL;
+    }
 
-CREATE TABLE `element` (
-  `id` int(11) NOT NULL,
-  `block` int(11) NOT NULL,
-  `type` int(11) NOT NULL,
-  `content` text COLLATE utf8_unicode_ci,
-  `file_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `position` int(11) NOT NULL,
-  `isPublic` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Дамп данных таблицы `element`
---
-
-INSERT INTO `element` (`id`, `block`, `type`, `content`, `file_name`, `position`, `isPublic`) VALUES
+    public function sqlDataElements(){
+        return <<<SQL
+        INSERT INTO `element` (`id`, `block`, `type`, `content`, `file_name`, `position`, `isPublic`) VALUES
 (1, 8, 1, '<p>Алиф (араб. ﺍ‎ — ’алиф) — первая буква арабского алфавита. Используется для обозначения длинного звука /aː/ или (реже) гортанной смычки.</p><p>Стоящая отдельно или в начале слова — ﺍ; в середине или в конце — ﺎ.</p><p>Филолог арабского языка Халиль ибн Ахмад пишет: «Звуков в арабском языке 29. 25 из них правильные, так как имеют фиксированные места образования и определённые преграды (в речевом аппарате, о которые ударяется голос), а 4 — полостные:</p><p>الواو — уау, الياء — йа, الألف اللينة — мягкая алиф, الهمزة — хамза (гортанная смычка).</p><p>Их назвали полостными (الجوفية), так как у голоса, выходящего из лёгких, нет преград (в речевом аппарате) ни в горле, ни в язычке, ни в языке. Звук состоит только из голоса, и у этих звуков нет определённого места образования»</p>', NULL, 1, 1),
 (3, 8, 3, '', '5b158f6183f80_1528139617.png', 1, 1),
 (4, 8, 2, '', '5b158f82c7582_1528139650.m4a', 3, 1),
@@ -62,36 +85,6 @@ INSERT INTO `element` (`id`, `block`, `type`, `content`, `file_name`, `position`
 (20, 14, 1, '<p>Арабское [x] гораздо твёрже русского Х в таких случаях, как «хрип», «храп», «хрупкий».</p><p>При артикуляции звука [x] язык отодвигается назад к язычку, а задняя спинка языка поднимается к мягкому нёбу. Между задней спинкой языка и язычком образуется узкая щель, через которую выдувается воздух. Речевой аппарат при артикуляции звука [x] напряжен</p>', NULL, 1, 1),
 (21, 14, 3, NULL, '5b15a299b7967_1528144537.png', 1, 1),
 (22, 14, 2, NULL, '5b15a2b909693_1528144569.m4a', 1, 1);
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `learning_process`
---
-
-CREATE TABLE `learning_process` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `lesson_id` int(11) NOT NULL,
-  `block_id` int(11) DEFAULT NULL,
-  `created` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
-
-
-INSERT INTO `lesson` (`id`, `level`, `number`, `title`, `desc`, `isPublic`) VALUES
-(1, 1, 1, 'Первый урок', NULL, 1),
-(2, 1, 2, 'Второй урок', NULL, 1);
-
--- --------------------------------------------------------
-
-
---
--- Дамп данных таблицы `level`
---
-
-
-
-
+SQL;
+    }
+}

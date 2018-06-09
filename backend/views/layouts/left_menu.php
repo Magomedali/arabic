@@ -25,7 +25,7 @@ use yii\helpers\{Html,Url};
                             if(\Yii::$app->hasModule("rbac") && \Yii::$app->user->can("superadmin")){
                         ?>
                         <li>
-                            <a href="<?php echo Url::to(['/rbac/rbac/index'])?>"><i class="fa fa-sitemap fa-fw"></i> RBAC</a>
+                            <a href="<?php echo Url::to(['/rbac/rbac/index'])?>"><i class="fa fa-sitemap fa-fw"></i> <?php echo Yii::t('site',"RBAC")?></a>
                             <!-- <ul class="nav nav-second-level">
                                 <li>
                                     <a href="<?php echo Url::to(['site/index'])?>">Роли</a>

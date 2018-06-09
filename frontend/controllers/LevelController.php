@@ -21,7 +21,7 @@ class LevelController extends Controller{
 					[
 						'actions'=>['index','lessons','lesson','level-completed'],
 						'allow'=>true,
-						'roles'=>[],
+						'roles'=>['@'],
 					]
 				]
 			]
@@ -61,12 +61,12 @@ class LevelController extends Controller{
             throw new HttpException(404,'Document Does Not Exist');
         }
 
-        $model = Level::findOne((int)$id);
+        $model = Level::find()->where(['id'=>(int)$id,'isPublic'=>1])->one();
 
         if(!isset($model->id)){
             throw new HttpException(404,'Document Does Not Exist');
         }
-        $lessons = $model->lessons;
+        $lessons = $model->publicLessons;
 
         return $this->render("lessons",['model'=>$model,'lessons'=>$lessons]);
 	}
@@ -79,7 +79,7 @@ class LevelController extends Controller{
             throw new HttpException(404,'Document Does Not Exist');
         }
 
-        $model = Level::findOne((int)$id);
+        $model = Level::find()->where(['id'=>(int)$id,'isPublic'=>1])->one();
 
         if(!isset($model->id)){
             throw new HttpException(404,'Document Does Not Exist');
@@ -98,7 +98,7 @@ class LevelController extends Controller{
             throw new HttpException(404,'Document Does Not Exist');
         }
 
-        $model = Lesson::findOne((int)$id);
+        $model = Lesson::find()->where(['id'=>(int)$id,'isPublic'=>1])->one();
 
         if(!isset($model->id)){
             throw new HttpException(404,'Document Does Not Exist');

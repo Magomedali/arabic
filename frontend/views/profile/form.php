@@ -3,7 +3,7 @@
 use yii\helpers\{Html,Url};
 use yii\bootstrap\ActiveForm;
 
-$this->title = Yii::t('site',"CHANGE_PROFILE");
+$this->title = Yii::t('profile',"CHANGE_PROFILE");
 ?>
 
 <div class="row">

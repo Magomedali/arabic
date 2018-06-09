@@ -17,10 +17,10 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="col-xs-12 page-action-panel">
 		<?php
 			if(\Yii::$app->user->can("superadmin")){
-            	echo Html::a(Yii::t('level','TO_UPDATE'),['/level/form','id'=>$model->id],['class'=>'btn btn-primary']);
+            	echo Html::a(Yii::t('site','TO_UPDATE'),['/level/form','id'=>$model->id],['class'=>'btn btn-primary']);
 			}
 			if(\Yii::$app->user->can("superadmin")){
-            	echo Html::a(Yii::t('level','TO_DELETE'),['/level/delete','id'=>$model->id],['class'=>'btn btn-danger','data-confirm'=>Yii::t('level','confirm_delete')]);
+            	echo Html::a(Yii::t('site','TO_DELETE'),['/level/delete','id'=>$model->id],['class'=>'btn btn-danger','data-confirm'=>Yii::t('level','confirm_delete')]);
 			}
 		?>
 	</div>
@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
 	<div class="col-xs-3">
-		<h4><?php echo Yii::t('level','LEVEL');?></h4>
 		<table class="table table-bordered table-collapsed table-hover">
 			<tr>
 				<td><?php echo $model->getAttributeLabel("title");?></td><td><?php echo Html::encode($model->title);?></td>
@@ -60,6 +59,9 @@ $this->params['breadcrumbs'][] = $this->title;
 			</div>
 			<div class="col-xs-1">
 				<?php echo $form->field($lesson,'isPublic')->checkbox();?>
+			</div>
+			<div class="col-xs-1">
+				<?php echo $form->field($lesson,'showDesc')->checkbox();?>
 			</div>
 			<div class="col-xs-3">
 				<?php echo $form->field($lesson,"level")->hiddenInput(['value'=>$model->id])->label(false)?>
@@ -119,9 +121,10 @@ $this->params['breadcrumbs'][] = $this->title;
 	                            return "#".$l['id'];
 	                        }
 					],
-					'title',
 					'number',
+					'title',
 					'isPublic',
+					'showDesc',
 					[
 		                'class' => 'yii\grid\ActionColumn',
 		                'template' => '{view}&nbsp&nbsp{form}&nbsp&nbsp{delete}',

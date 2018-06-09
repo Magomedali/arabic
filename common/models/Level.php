@@ -33,7 +33,7 @@ class Level extends ActiveRecord
             ['position','unique'],
             ['position','integer'],
             ['desc','default','value'=>null],
-            ['isPublic','default','value' => true ]
+            [['isPublic','showDesc'],'default','value' => true ]
         ];
     }
 
@@ -50,40 +50,45 @@ class Level extends ActiveRecord
     }
 
 
+    public function getPublicLessons(){
+        return Lesson::find()->where(['level'=>$this->id,'isPublic'=>true])->all();
+    }
+
+
 
     public function getFirstLevel(){
-        return self::find()->orderBy(['position'=>SORT_ASC])->one();
+        return self::find()->where(['isPublic'=>true])->orderBy(['position'=>SORT_ASC])->one();
     }
 
 
 
     public function getLastLevel(){
-        return self::find()->orderBy(['position'=>SORT_DESC])->one();
+        return self::find()->where(['isPublic'=>true])->orderBy(['position'=>SORT_DESC])->one();
     }
 
 
 
     public function getFirstLesson(){
-        return Lesson::find()->where(['level'=>$this->id])->orderBy(['number'=>SORT_ASC])->one();
+        return Lesson::find()->where(['level'=>$this->id,'isPublic'=>true])->orderBy(['number'=>SORT_ASC])->one();
     }
 
 
 
     public function getLastLesson(){
-        return Lesson::find()->where(['level'=>$this->id])->orderBy(['number'=>SORT_DESC])->one();
+        return Lesson::find()->where(['level'=>$this->id,'isPublic'=>true])->orderBy(['number'=>SORT_DESC])->one();
     }
 
 
 
     public function getNextLevel(){
-        return self::find()->andFilterWhere(['>','position',$this->position])->orderBy(['position'=>SORT_ASC])->one();
+        return self::find()->where(['isPublic'=>true])->andFilterWhere(['>','position',$this->position])->orderBy(['position'=>SORT_ASC])->one();
     }
 
 
 
 
     public function getPrevLevel(){
-        return self::find()->andFilterWhere(['<','position',$this->position])->orderBy(['position'=>SORT_DESC])->one();
+        return self::find()->where(['isPublic'=>true])->andFilterWhere(['<','position',$this->position])->orderBy(['position'=>SORT_DESC])->one();
     }
 
 }

@@ -24,49 +24,56 @@ $model = new Element;
 					<?php echo $form->field($model,'position')->textInput(['min'=>1,'type'=>'number','style'=>"width:80px"]);?>
 				</div>
 
-				<div class="col-xs-6">	
-					<?php echo $type == Element::TYPE_TEXT ? $form->field($model,'content')->widget(Widget::className(), [
-						'model'=>$model,
-						'attribute'=>'content',
-						'options'=>[
-							'id'=>"textareaContent_{$block}_{$count}"
-						],
-					    'settings' => [
-					        'lang' => 'ru',
-					        'minHeight' => 200,
-					        'imageUpload' => Url::to(['/site/image-upload']),
-        					'imageManagerJson' => Url::to(['/site/images-get']),
-        					'fileUpload' => Url::to(['/site/file-upload']),
-        					'fileManagerJson' => Url::to(['/site/files-get']),
-        					'imageDelete' => Url::to(['/site/file-delete']),
-					        'plugins' => [
-					        	'imagemanager',// => 'vova07\imperavi\bundles\ImageManagerAsset',
-					        	'filemanager',// => 'vova07\imperavi\bundles\FileManagerAsset',
-					            'fullscreen',
-					            'fontsize',
-					            'table',
-					            'textdirection',
-					            'textexpander',
-					            'video',
-					            'fontcolor',
-					            'counter'
-					        ]
-					    ]
-					]) : "";?>
+				<?php if($type == Element::TYPE_TEXT){?>
+					<div class="col-xs-6">	
+						<?php echo $form->field($model,'content')->widget(Widget::className(), [
+							'model'=>$model,
+							'attribute'=>'content',
+							'options'=>[
+								'id'=>"textareaContent_{$block}_{$count}"
+							],
+						    'settings' => [
+						        'lang' => 'ru',
+						        'minHeight' => 200,
+						        'imageUpload' => Url::to(['/site/image-upload']),
+	        					'imageManagerJson' => Url::to(['/site/images-get']),
+	        					'fileUpload' => Url::to(['/site/file-upload']),
+	        					'fileManagerJson' => Url::to(['/site/files-get']),
+	        					'imageDelete' => Url::to(['/site/file-delete']),
+						        'plugins' => [
+						        	'imagemanager',// => 'vova07\imperavi\bundles\ImageManagerAsset',
+						        	'filemanager',// => 'vova07\imperavi\bundles\FileManagerAsset',
+						            'fullscreen',
+						            'fontsize',
+						            'table',
+						            'textdirection',
+						            'textexpander',
+						            'video',
+						            'fontcolor',
+						            'counter'
+						        ]
+						    ]
+						]);?>
+					</div>
+				<?php }else{ ?>
+					<div class="col-xs-6">
+						<?php
+							echo $form->field($model,"files")->fileInput();
+							if($type == Element::TYPE_AUDIO){
+								echo $form->field($model,"audio_icon")->fileInput();
+							}
+						?>
+					</div>
+				<?php } ?>
+
+				
+				<div class="col-xs-3">
+					<?php echo $form->field($model,'isPublic')->checkbox();?>
 				</div>
 
-				<?php
-					if($type != Element::TYPE_TEXT){
-				?>
-					<div class="col-xs-3">
-						<?php echo $form->field($model,"files")->fileInput();?>
-					</div>
-				<?php
-					}
-				?>
 				<div class="col-xs-2 <?php echo $type != Element::TYPE_TEXT ? "" : "col-xs-offset-3" ; ?>">
 					<div class="btn-group">
-					<?php echo Html::submitInput("SAVE",['class'=>'btn btn-success']);?>
+					<?php echo Html::submitInput(Yii::t('site','SAVE'),['class'=>'btn btn-success']);?>
 					<?php echo Html::a("X",null,['class'=>'btn btn-danger removeElement','data-confirm'=>Yii::t('lesson','REMOVE_ELEMENT_CONFIRM')]);?>
 					</div>
 				</div>

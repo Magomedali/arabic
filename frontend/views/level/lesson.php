@@ -53,6 +53,14 @@ $lessonIsProcessed = $user->lessonIsProcessed($model->id);
 	</div>
 </div>
 <div class="row">
+	<div class="col-xs-12">
+		<h3>Описание</h3>
+		<div>
+			<?php echo $model->desc?>
+		</div>
+	</div>
+</div>
+<div class="row">
 	<div class="col-xs-12 blocks">
 		<?php
 			$blocks = $model->blocks;

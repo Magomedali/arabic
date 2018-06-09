@@ -49,10 +49,52 @@ class Element extends cElement
     }
 
 
+    
+    public function uploadAudioIcon()
+    {
+        if ($this->type == self::TYPE_AUDIO && $this->validate()) {
+
+            $filePath = Yii::getAlias('@files').self::$FOLDERS[$this->type];
+
+
+            if(!file_exists($filePath)){
+                //если директория не существует, создаем директорию
+                if(!mkdir($filePath)){
+                    throw new Exception("Не удалось создать директорию для хранения файлов", 1);
+                }
+            }
+
+            
+
+            //Старый файл
+            $old_file = $this->audio_icon;
+            
+           
+            $file = $this->icon;
+            $basename = uniqid();
+            $fName = "icon_".$basename . '_'.time().'.' . $file->extension;
+            $file->saveAs($filePath . $fName);
+            $this->audio_icon = $fName;
+            
+            if($this->audio_icon && $old_file){
+                $this->unlinkFile($old_file);
+            }
+            
+            return $this->audio_icon;
+        } else {
+            return false;
+        }
+
+    }
+
+
+
+
+
+
+
     public function unlinkFile($file=null){
        
-        
-
         if($this->type == self::TYPE_TEXT || !$file) return null;
 
         $filePath = Yii::getAlias('@files').self::$FOLDERS[$this->type];
@@ -71,6 +113,7 @@ class Element extends cElement
 		
 		if($this->type != self::TYPE_TEXT){
 			$this->unlinkFile($this->file_name);
+            $this->unlinkFile($this->audio_icon);
 		}
 
 		return $this->delete();

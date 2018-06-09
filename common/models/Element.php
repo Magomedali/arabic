@@ -10,6 +10,7 @@ class Element extends ActiveRecord
 {
 
     public $files;
+    public $icon;
 
 	const TYPE_TEXT = 1;
 	const TYPE_AUDIO = 2;
@@ -62,6 +63,7 @@ class Element extends ActiveRecord
             [['block','position','type'],'integer'],
             ['content','string'],
             ['files','file', 'skipOnEmpty' => true, 'extensions' => ['png', 'jpg', 'gif', 'mp4','m4a','mpeg', 'mp3'],'checkExtensionByMimeType'=>false],
+            ['icon','file', 'skipOnEmpty' => true, 'extensions' => ['png', 'jpg', 'gif'],'checkExtensionByMimeType'=>false],
             ['isPublic','default','value' => true ],
             ['position','default','value' => 1 ]
         ];
@@ -94,6 +96,21 @@ class Element extends ActiveRecord
         if($this->type == Element::TYPE_TEXT) return false;
         
         return   Yii::getAlias('@files_pub').self::$FOLDERS[$this->type].$this->file_name;
+    }
+
+    
+    public function hasAudioIcon(){
+        if($this->type != Element::TYPE_AUDIO) return false;
+
+        $filePath = Yii::getAlias('@files').self::$FOLDERS[$this->type];
+        return $this->audio_icon && file_exists($filePath.$this->audio_icon);
+    }
+
+
+    public function getAudio_icon_path(){
+        if($this->type != Element::TYPE_AUDIO) return false;
+        
+        return   Yii::getAlias('@files_pub').self::$FOLDERS[$this->type].$this->audio_icon;
     }
 
 

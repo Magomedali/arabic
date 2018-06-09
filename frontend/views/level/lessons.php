@@ -3,12 +3,20 @@
 use yii\helpers\{Html,Url};
 use yii\bootstrap\ActiveForm;
 
-$this->title = Yii::t('site','LEVEL_TITLE');
+$this->title = Yii::t('site','LEVEL_TITLE',['name'=>$model->title]);
 
 ?>
 <div class="row">
 	<div class="col-xs-12">
-		<h1><?php echo Yii::t('site','LEVEL_TITLE')?></h1>
+		<h1><?php echo $this->title; ?></h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<h3>Описание</h3>
+		<div>
+			<?php echo $model->desc?>
+		</div>
 	</div>
 </div>
 <div class="row">
