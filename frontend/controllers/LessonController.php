@@ -20,7 +20,7 @@ class LessonController extends Controller{
 					[
 						'actions'=>['index','process'],
 						'allow'=>true,
-						'roles'=>[],
+						'roles'=>['@'],
 					]
 				]
 			]

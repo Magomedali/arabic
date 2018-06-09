@@ -23,6 +23,7 @@ class m180521_084651_learning extends Migration
             'id'        => $this->primaryKey(),
             'title'     => $this->string()->notNull(),
             'desc'      => $this->text()->null(),
+            'showDesc'  => $this->boolean()->null(),
             'isPublic'  => $this->boolean()->null(),
             'position'  => $this->smallInteger()->null()
         ], $tableOptions);
@@ -41,6 +42,7 @@ class m180521_084651_learning extends Migration
             'number'    => $this->integer()->notNull(),
             'title'     => $this->string()->notNull(),
             'desc'      =>$this->text()->null(),
+            'showDesc'  => $this->boolean()->null(),
             'isPublic'  => $this->boolean()->null(),
         ], $tableOptions);
 
@@ -56,10 +58,11 @@ class m180521_084651_learning extends Migration
 
         //---------------------Таблица block
         $this->createTable('{{%block}}', [
-            'id'        => $this->primaryKey(),
-            'lesson'     => $this->integer()->notNull(),
-            'position'    => $this->integer()->notNull(),
-            'isPublic'  => $this->boolean()->null(),
+            'id'            => $this->primaryKey(),
+            'lesson'        => $this->integer()->notNull(),
+            'position'      => $this->integer()->notNull(),
+            'displayInline' => $this->boolean()->null(),  
+            'isPublic'      => $this->boolean()->null(),
         ], $tableOptions);
 
         $this->createIndex('block_lesson_position_unique_index',
@@ -78,6 +81,7 @@ class m180521_084651_learning extends Migration
             'type'        => $this->integer()->notNull(),
             'content'     => $this->text()->null(),
             'file_name'   => $this->string()->null(),
+            'audio_icon'  => $this->string()->null(),
             'position'    => $this->integer()->notNull(),     
             'isPublic'    => $this->boolean()->null(),
         ], $tableOptions);

@@ -32,9 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
 	                            return "#".$l['id'];
 	                        }
 					],
+					'position',
 					'title',
 					'isPublic',
-					'position',
+					'showDesc',
 					[
 		                'class' => 'yii\grid\ActionColumn',
 		                'template' => '{view}&nbsp&nbsp{form}',

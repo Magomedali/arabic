@@ -30,7 +30,7 @@ class Block extends ActiveRecord
             [['lesson','position'],'required'],
             [['lesson','position'],'integer'],
 
-            ['isPublic','default','value' => true ],
+            [['isPublic','displayInline'],'default','value' => true ],
             ['position','checkExistsBlock']
         ];
     }

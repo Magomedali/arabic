@@ -13,7 +13,7 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'name'=>"Arabic course",
+    'name'=>"APP_NAME",
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'i18n'=>[
@@ -23,7 +23,6 @@ return [
                     'basePath'=>'@frontend/messages',
                 ],
             ]
-            
         ],
         'request' => [
             'csrfParam' => '_csrf-bicyclepark-frontend',

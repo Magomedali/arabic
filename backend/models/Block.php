@@ -40,6 +40,15 @@ class Block extends cBlock
 		        if($element->files){
 		        	$element->uploadFile();
 		        }
+
+
+		        //Добавляем для аудио иконку
+		        if($element->type == Element::TYPE_AUDIO){
+		        	$element->icon = UploadedFile::getInstance($element,'icon');
+			        if($element->icon){
+			        	$element->uploadAudioIcon();
+			        }
+		        }
 		    }
 
 		    $element->save();

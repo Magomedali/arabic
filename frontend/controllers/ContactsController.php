@@ -22,7 +22,7 @@ class ContactsController extends Controller{
 					[
 						'actions'=>['index'],
 						'allow'=>true,
-						'roles'=>[],
+						'roles'=>['@'],
 					]
 				]
 			]

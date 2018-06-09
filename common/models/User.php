@@ -361,7 +361,7 @@ class User extends ActiveRecord implements IdentityInterface
         $lesson = Lesson::find()
                     ->innerJoin(['lp'=>LearningProcess::tableName()]," lp.lesson_id = lesson.id")
                     ->innerJoin(['l'=>Level::tableName()]," l.id = lesson.level")
-                    ->where(['lp.user_id'=>$this->id])->orderBy(['l.position'=>SORT_DESC,'lesson.number'=>SORT_DESC])
+                    ->where(['lp.user_id'=>$this->id,'l.isPublic' => 1,'lesson.isPublic' => 1])->orderBy(['l.position'=>SORT_DESC,'lesson.number'=>SORT_DESC])
                     ->one();
 
         if(isset($lesson->id)) return $lesson;

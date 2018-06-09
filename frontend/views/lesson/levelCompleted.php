@@ -3,7 +3,7 @@
 use yii\helpers\{Html,Url};
 use yii\bootstrap\ActiveForm;
 
-$this->title = Yii::t('site','LEVEL_TITLE');
+$this->title = Yii::t('site','LEVEL_TITLE',['name'=>$model->title]);
 
 
 $nextLevel = $model->nextLevel;

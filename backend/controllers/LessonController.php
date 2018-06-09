@@ -2,7 +2,7 @@
 namespace backend\controllers;
 
 use Yii;
-use yii\web\Controller;
+use yii\web\{Controller,HttpException};
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use backend\models\{Lesson,Block,Element};
@@ -163,6 +163,9 @@ class LessonController extends Controller
     }
 
 
+
+
+
     public function actionAddElement(){
 
         $post = Yii::$app->request->post();
@@ -189,6 +192,11 @@ class LessonController extends Controller
     }
 
 
+
+
+
+
+
     public function actionView($id){
 
         if(!$id){
@@ -205,6 +213,10 @@ class LessonController extends Controller
             'model'=>$model
         ]);
     }
+
+
+
+
 
 
 
@@ -293,6 +305,10 @@ class LessonController extends Controller
 
 
 
+
+
+
+
     public function actionRemoveElement($id){
 
 
@@ -316,5 +332,8 @@ class LessonController extends Controller
 
         return ['res' => 1];
     }
+
+
+
     
 }
