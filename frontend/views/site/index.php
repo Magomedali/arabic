@@ -40,11 +40,20 @@ $this->title = Yii::t('site',Yii::$app->name);
 
 			$user = Yii::$app->user->identity;
 			$lesson = $user->getCurrentLesson();
-			if(isset($lesson->id)){
+			$nextL = isset($lesson->id) ? $lesson->nextLesson : null;
+			if(isset($nextL->id)){
+
 				?>
+				
+				<?php if($nextL->showDesc){?>
+					<div class="level_desc">
+						<?php echo $nextL->desc;?>
+					</div>
+				<?php } ?>
+
 
 				<div>
-					<?php echo Html::a("Продолжить обучение",['level/lesson','id'=>$lesson->id],['class'=>'btn btn-success']);?>
+					<?php echo Html::a("Продолжить обучение",['level/lesson','id'=>$nextL->id],['class'=>'btn btn-success']);?>
 				</div>
 
 				<?php
@@ -55,6 +64,11 @@ $this->title = Yii::t('site',Yii::$app->name);
 				if(isset($firstLevel->id)){
 				?>
 
+				<?php if($firstLevel->showDesc){?>
+					<div class="level_desc">
+						<?php echo $firstLevel->desc;?>
+					</div>
+				<?php } ?>
 				<div>
 					<?php echo Html::a("Начать обучение",['level/lessons','id'=>$firstLevel->id],['class'=>'btn btn-success']);?>
 				</div>

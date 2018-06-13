@@ -54,10 +54,12 @@ $lessonIsProcessed = $user->lessonIsProcessed($model->id);
 </div>
 <div class="row">
 	<div class="col-xs-12">
-		<h3>Описание</h3>
-		<div>
-			<?php echo $model->desc?>
-		</div>
+		<?php if($model->showDesc){?>
+			<h3>Описание</h3>
+			<div>
+				<?php echo $model->desc?>
+			</div>
+		<?php } ?>
 	</div>
 </div>
 <div class="row">
@@ -74,43 +76,32 @@ $lessonIsProcessed = $user->lessonIsProcessed($model->id);
 						
 					<?php
 					if(is_array($elements)){
+
+						$dIl= $block->displayInline;
+						
+						if($dIl){ ?> <ul> <?php }
+
 						foreach ($elements as $key2 => $e) {
+
+							if($dIl){ ?> <li> <?php }
 						?>
 							<div class="element">
 								<?php 
 
 									if($e->type == Element::TYPE_TEXT){
-									?>
-										<div class="element_text">
-											<?php echo $e->content; ?>
-										</div>
-									<?php
+										echo $this->render("displayText",['e'=>$e]);
 									}elseif($e->type == Element::TYPE_IMAGE){
-									?>	
-										<div class="element_image_text">
-											<?php echo $e->content; ?>
-										</div>
-										<div class="element_image">
-											<img src="<?php echo $e->file?>">
-										</div>
-									<?php
+										echo $this->render("displayImage",['e'=>$e]);
 									}elseif($e->type == Element::TYPE_AUDIO){
-									?>	
-										<div class="element_audio_text">
-											<?php echo $e->content; ?>
-										</div>
-										<div class="element_audio">
-											<audio controls>
-												<source src="<?php echo $e->file?>">
-												Ваш браузер не пожжерживает тег audio!
-											</audio>
-										</div>
-									<?php
+										echo $this->render("displayAudio",['e'=>$e]);
 									}
 								?>
 							</div>
 						<?php
+							if($dIl){ ?> </li> <?php }
 						}
+
+						if($dIl){ ?> </ul> <?php }
 					}
 					?>
 						</div>
@@ -139,4 +130,29 @@ $lessonIsProcessed = $user->lessonIsProcessed($model->id);
 </div>
 <?php
 	}
+?>
+
+<?php 
+$script = <<<JS
+	if($(".img_icon_for_audio img").length){
+		$(".img_icon_for_audio img").css("cursor","pointer");
+		$(".img_icon_for_audio img").click(function(event){
+			event.preventDefault();
+			var audio = $(this).parent().siblings("audio");
+			if(audio.length){
+				var id = audio.attr("id");
+				var a = document.getElementById(id);
+				
+				if(a.currentTime != 0.0){
+					a.pause();
+					a.currentTime = 0.0;
+				}else{
+					a.play();
+				}
+			}
+		});
+	}
+JS;
+
+	$this->registerJS($script);
 ?>

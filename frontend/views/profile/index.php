@@ -13,11 +13,7 @@ $user = \Yii::$app->user->identity;
 	<div class="col-lg-4">
 		<h2><?php echo Yii::t('profile',"PERSONAL_DATA"); ?></h2>
 
-		<?php
-			//if(Yii::$app->user->can("base")){
-				echo Html::a(\Yii::t('profile','CHANGE_PROFILE'),['profile/change'],['class'=>'btn btn-primary']);
-			//}
-		?>
+		<?php echo Html::a(\Yii::t('profile','CHANGE_PROFILE'),['profile/change'],['class'=>'btn btn-primary']); ?>
 
 		<table class="table table-bordered table-hover">
 			<tr>
@@ -62,7 +58,9 @@ $user = \Yii::$app->user->identity;
 		</table>
 		
 	</div>
-
+	<div class="col-lg-4">
+		<p>Ваш текущий уровень : <?php echo "0%";?></p>
+	</div>
 </div>
 <?php
 

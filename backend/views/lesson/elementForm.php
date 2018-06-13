@@ -60,7 +60,7 @@ $model = new Element;
 						<?php
 							echo $form->field($model,"files")->fileInput();
 							if($type == Element::TYPE_AUDIO){
-								echo $form->field($model,"audio_icon")->fileInput();
+								echo $form->field($model,"icon")->fileInput();
 							}
 						?>
 					</div>

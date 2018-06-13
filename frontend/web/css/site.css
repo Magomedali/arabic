@@ -131,6 +131,18 @@ a.desc:after {
 
         }
 
+            .elements ul{
+                margin:0px;
+                padding: 0px;
+                display: table;
+            }
+
+            .elements ul li{
+                list-style: none;
+                display: block;
+                float: left;
+            }
+
             .element{
 
             }

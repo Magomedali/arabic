@@ -13,10 +13,12 @@ $this->title = Yii::t('site','LEVEL_TITLE',['name'=>$model->title]);
 </div>
 <div class="row">
 	<div class="col-xs-12">
-		<h3>Описание</h3>
-		<div>
-			<?php echo $model->desc?>
-		</div>
+		<?php if($model->showDesc){?>
+			<h3>Описание</h3>
+			<div>
+				<?php echo $model->desc?>
+			</div>
+		<?php } ?>
 	</div>
 </div>
 <div class="row">
