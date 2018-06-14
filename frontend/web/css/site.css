@@ -125,6 +125,8 @@ a.desc:after {
 
     .block{
         margin:10px 0px 50px 0px;
+        border-bottom: 2px solid #ffafaf91;
+        padding-bottom: 40px;
     }
 
         .elements{
@@ -134,13 +136,14 @@ a.desc:after {
             .elements ul{
                 margin:0px;
                 padding: 0px;
-                display: table;
+                display: flex;
             }
 
             .elements ul li{
                 list-style: none;
                 display: block;
                 float: left;
+                margin-right: 15px;
             }
 
             .element{

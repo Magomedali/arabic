@@ -51,7 +51,7 @@ class Level extends ActiveRecord
 
 
     public function getPublicLessons(){
-        return Lesson::find()->where(['level'=>$this->id,'isPublic'=>true])->all();
+        return Lesson::find()->where(['level'=>$this->id,'isPublic'=>true])->orderBy(['number'=>SORT_ASC])->all();
     }
 
 

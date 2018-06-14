@@ -218,11 +218,26 @@ a.desc:after {
 
     .block{
         margin:10px 0px 50px 0px;
+        border-bottom: 2px solid #ffafaf91;
+        padding-bottom: 40px;
     }
 
         .elements{
 
         }
+
+            .elements ul{
+                margin:0px;
+                padding: 0px;
+                display: flex;
+            }
+
+            .elements ul li{
+                list-style: none;
+                display: block;
+                float: left;
+                margin-right: 15px;
+            }
 
             .element{
 
@@ -239,4 +254,17 @@ a.desc:after {
                 .element_audio{
                     text-align: center;
                 }
+
+
+.previous_lesson{
+ margin-right: 20px; 
+}
+
+.lesson-title{
+}
+
+.lesson-title h2{
+    margin: 0px 15px 0px 0px;
+    float: left;
+}
 

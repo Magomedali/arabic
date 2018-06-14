@@ -146,9 +146,9 @@ class ConfirmUser extends Model{
                 ['html' => 'confirmPhone'],
                 ['user' => $user,'pincode'=>$pincode]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::t('site',Yii::$app->name) . ' robot'])
             ->setTo($user->email)
-            ->setSubject('Confirm phone profile in bicyclepark ' . Yii::$app->name)
+            ->setSubject('Confirm phone profile in bicyclepark ' . Yii::t('site',Yii::$app->name))
             ->send();
 
         
@@ -170,9 +170,9 @@ class ConfirmUser extends Model{
                 ['html' => 'confirmEmail'],
                 ['user' => $user]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::t('site',Yii::$app->name) . ' robot'])
             ->setTo($user->email)
-            ->setSubject('Confirm profile in bicyclepark ' . Yii::$app->name)
+            ->setSubject('Confirm profile in arabic course ' . Yii::t('site',Yii::$app->name))
             ->send();
 
     }

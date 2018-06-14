@@ -65,10 +65,10 @@ $lessonIsProcessed = $user->lessonIsProcessed($model->id);
 <div class="row">
 	<div class="col-xs-12 blocks">
 		<?php
-			$blocks = $model->blocks;
+			$blocks = $model->publicBlocks;
 			if(is_array($blocks)){
 				foreach ($blocks as $key => $block) {
-					$elements = $block->elements;
+					$elements = $block->publicElements;
 					?>
 					<div class="row block">
 						<div class="col-xs-12 elements">

@@ -34,7 +34,7 @@ class SignupForm extends Model
     {
         return [
             [['name','sname','patronymic','email'], 'trim'],
-            [['email','phone','password','confirm_password','accept_condition'], 'required'],
+            [['email','password','confirm_password','accept_condition'], 'required'],
             
             ['phone', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Пользователь с таким телефонным номером уже зарегистрирован!'],
             

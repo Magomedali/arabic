@@ -106,7 +106,7 @@ if(is_array($block_elements) && count($block_elements)){
 			<?php } ?>
 
 			<div class="col-xs-3">
-				<?php echo $form->field($ble,'isPublic')->checkbox();?>
+				<?php echo $form->field($ble,'isPublic')->checkbox(['id'=>'element#'.$ble['id']."isPublic"]);?>
 			</div>
 
 			<div class="col-xs-2 <?php echo $ble['type'] != Element::TYPE_TEXT ? "" : "col-xs-offset-3" ; ?>">

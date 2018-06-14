@@ -81,7 +81,7 @@ class Lesson extends ActiveRecord
 
 
     public function getPublicBlocks(){
-        return Block::find()->where(['lesson'=>$this->id,'isPublic'=>true])->all();
+        return Block::find()->where(['lesson'=>$this->id,'isPublic'=>true])->orderBy(['position'=>SORT_ASC])->all();
     }
 
 

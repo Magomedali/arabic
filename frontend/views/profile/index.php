@@ -2,6 +2,7 @@
 
 use yii\helpers\{Html,Url};
 use yii\bootstrap\{Modal,ActiveForm};
+use common\models\Level;
 
 $this->title = Yii::t('profile',"PERSONAL_PAGE");
 $this->params['breadcrumbs'][] = $this->title;
@@ -11,15 +12,12 @@ $user = \Yii::$app->user->identity;
 ?>
 <div class="row">
 	<div class="col-lg-4">
-		<h2><?php echo Yii::t('profile',"PERSONAL_DATA"); ?></h2>
+		<h2><?php echo Html::encode($user->fullName); ?></h2>
 
 		<?php echo Html::a(\Yii::t('profile','CHANGE_PROFILE'),['profile/change'],['class'=>'btn btn-primary']); ?>
 
 		<table class="table table-bordered table-hover">
-			<tr>
-				<td><?php echo Yii::t('profile',"PERSONAL_INITIATES"); ?></td>
-				<td><?php echo Html::encode($user->fullName)?></td>
-			</tr>
+			
 			<tr>
 				<td><?php echo Yii::t('profile',"EMAIL"); ?></td>
 				<td>
@@ -59,7 +57,22 @@ $user = \Yii::$app->user->identity;
 		
 	</div>
 	<div class="col-lg-4">
-		<p>Ваш текущий уровень : <?php echo "0%";?></p>
+		<?php 
+			$lastLesson = $user->getCurrentLesson();
+			if($lastLesson){
+		?>
+			<h3>Урок на котором вы остановились: <?php echo Html::a($lastLesson->title,['level/lesson','id'=>$lastLesson->id]);?></h3>
+		<?php 
+			}else{
+				$level = new Level();
+        		$firstLevel = $level->firstLevel;
+        		if($firstLevel){
+        		?>
+					<h3><?php echo Html::a("Начать обучение",['level/lessons','id'=>$firstLevel->id],['class'=>'btn btn-success']);?></h3>
+				<?php
+        		}
+			}
+		?>
 	</div>
 </div>
 <?php

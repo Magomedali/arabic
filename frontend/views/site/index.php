@@ -18,8 +18,6 @@ $this->title = Yii::t('site',Yii::$app->name);
 	<div class="col-xs-4">
 		<?php $form = ActiveForm::begin(['action'=>['site/signup'],'id' => 'form-signup']); ?>
 
-                <?php echo $form->field($signUpModel, 'phone')->textInput() ?>
-
                 <?php echo $form->field($signUpModel, 'email')->textInput() ?>
 
                 <?php echo $form->field($signUpModel, 'password')->passwordInput() ?>

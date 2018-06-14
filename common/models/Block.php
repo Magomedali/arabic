@@ -68,5 +68,10 @@ class Block extends ActiveRecord
     }
 
 
+    public function getPublicElements(){
+        return Element::find()->where(['block'=>$this->id,'isPublic'=>1])->orderBy(['position'=>SORT_ASC])->all();
+    }
+
+
 }
 ?>

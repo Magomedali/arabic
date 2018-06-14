@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'login'=>"E-mail/Номер телефона",
+    'login'=>"E-mail",
     'password'=>"Пароль",
     'rememberMe'=>'Запомнить меня'
 ];

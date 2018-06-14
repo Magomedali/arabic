@@ -100,10 +100,10 @@ $this->params['breadcrumbs'][] = $this->title;
 										<?php echo $form->field($b,'position')->textInput(['type'=>'number','min'=>1,'style'=>"width: 85px;"]); ?>
 								</div>
 								<div class="col-xs-2">
-									<?php echo $form->field($b,'isPublic')->checkbox(['id'=>'block#'.$b['id']]);?>
+									<?php echo $form->field($b,'isPublic')->checkbox(['id'=>'block#'.$b['id']."isPublic"]);?>
 								</div>
 								<div class="col-xs-2">
-									<?php echo $form->field($b,'displayInline')->checkbox(['id'=>'block#'.$b['id']]);?>
+									<?php echo $form->field($b,'displayInline')->checkbox(['id'=>'block#'.$b['id']."displayInline"]);?>
 								</div>
 								<div class="col-xs-3 col-xs-offset-2">
 									<div class="btn-group">
