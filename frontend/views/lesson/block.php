@@ -179,9 +179,9 @@ $script = <<<JS
 
 
 	//Для таблиц
-	if($(".element_audio_image,.element_audio_image").length){
-		$(".element_audio_image,.element_audio_image").css("cursor","pointer");
-		$(".element_audio_image,.element_audio_image").click(function(){
+	if($(".element_audio_image,.element_audio_content").length){
+		$(".element_audio_image,.element_audio_content").css("cursor","pointer");
+		$(".element_audio_image,.element_audio_content").click(function(){
 			
 			var audio_id = parseInt($(this).parents("td").data("id"));
 			var a = document.getElementById("audio__"+audio_id);
