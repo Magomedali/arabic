@@ -39,7 +39,7 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
     
-    <?= \common\widgets\Notification\Notify::widget(); ?>
+    <?= \common\widgets\notification\Notify::widget(); ?>
     <?= $content ?>
 
 <?php $this->endBody() ?>

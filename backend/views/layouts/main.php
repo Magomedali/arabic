@@ -294,7 +294,7 @@ AppAsset::register($this);
             </div>
             <!-- /.row -->
 
-            <?php echo  \common\widgets\Notification\Notify::widget(); ?>
+            <?php echo  \common\widgets\notification\Notify::widget(); ?>
             
             <?php echo $content ?>
 
