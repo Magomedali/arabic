@@ -61,6 +61,9 @@ $model = new Element;
 							echo $form->field($model,"files")->fileInput();
 							if($type == Element::TYPE_AUDIO){
 								echo $form->field($model,"icon")->fileInput();
+								echo $form->field($model,"content")->textInput();
+								echo $form->field($model,"translate")->textInput();
+								echo $form->field($model,"displayInTable")->checkbox();
 							}
 						?>
 					</div>

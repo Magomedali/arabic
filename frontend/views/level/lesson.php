@@ -60,99 +60,19 @@ $lessonIsProcessed = $user->lessonIsProcessed($model->id);
 				<?php echo $model->desc?>
 			</div>
 		<?php } ?>
-	</div>
-</div>
-<div class="row">
-	<div class="col-xs-12 blocks">
+
+
 		<?php
-			$blocks = $model->publicBlocks;
-			if(is_array($blocks)){
-				foreach ($blocks as $key => $block) {
-					$elements = $block->publicElements;
-					?>
-					<div class="row block">
-						<div class="col-xs-12 elements">
-							
-						
-					<?php
-					if(is_array($elements)){
-
-						$dIl= $block->displayInline;
-						
-						if($dIl){ ?> <ul> <?php }
-
-						foreach ($elements as $key2 => $e) {
-
-							if($dIl){ ?> <li> <?php }
-						?>
-							<div class="element">
-								<?php 
-
-									if($e->type == Element::TYPE_TEXT){
-										echo $this->render("displayText",['e'=>$e]);
-									}elseif($e->type == Element::TYPE_IMAGE){
-										echo $this->render("displayImage",['e'=>$e]);
-									}elseif($e->type == Element::TYPE_AUDIO){
-										echo $this->render("displayAudio",['e'=>$e]);
-									}
-								?>
-							</div>
-						<?php
-							if($dIl){ ?> </li> <?php }
-						}
-
-						if($dIl){ ?> </ul> <?php }
-					}
-					?>
-						</div>
-					</div>
-					<?php
-				}
+			$firstBlock = $model->firstBlock;
+			if(isset($firstBlock->id)){
+		?>
+			<div class="pull-center" style="text-align: center;">
+				<?php echo Html::a("Перейти к изучению",['lesson/block','id'=>$model->id,'block_id'=>$firstBlock->id],['class'=>'btn btn-success']);?>
+			</div>
+		<?php
 			}
 		?>
+		
+		
 	</div>
 </div>
-
-
-<?php
-	if(!$lessonIsProcessed){
-?>
-<div class="row">
-	<div class="col-xs-12">
-		<?php $form = ActiveForm::begin(['action'=>['lesson/process']]);?>
-			
-		<?php echo Html::hiddenInput('lesson',$model->id); ?>
-			
-		<?php echo Html::submitButton("Материал пройден",['class'=>'btn btn-success']); ?>
-			
-		<?php ActiveForm::end();?>
-	</div>
-</div>
-<?php
-	}
-?>
-
-<?php 
-$script = <<<JS
-	if($(".img_icon_for_audio img").length){
-		$(".img_icon_for_audio img").css("cursor","pointer");
-		$(".img_icon_for_audio img").click(function(event){
-			event.preventDefault();
-			var audio = $(this).parent().siblings("audio");
-			if(audio.length){
-				var id = audio.attr("id");
-				var a = document.getElementById(id);
-				
-				if(a.currentTime != 0.0){
-					a.pause();
-					a.currentTime = 0.0;
-				}else{
-					a.play();
-				}
-			}
-		});
-	}
-JS;
-
-	$this->registerJS($script);
-?>

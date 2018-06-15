@@ -61,10 +61,12 @@ class Element extends ActiveRecord
         return [
             [['block','type'],'required'],
             [['block','position','type'],'integer'],
-            ['content','string'],
+            [['content','translate'],'string'],
             ['files','file', 'skipOnEmpty' => true, 'extensions' => ['png', 'jpg', 'gif', 'mp4','m4a','mpeg', 'mp3'],'checkExtensionByMimeType'=>false],
             ['icon','file', 'skipOnEmpty' => true, 'extensions' => ['png', 'jpg', 'gif'],'checkExtensionByMimeType'=>false],
-            ['isPublic','default','value' => true ],
+            [['isPublic'],'default','value' => false ],
+            [['displayInTable'],'default','value' => false ],
+            
             ['position','default','value' => 1 ]
         ];
     }

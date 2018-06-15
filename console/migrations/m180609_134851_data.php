@@ -15,8 +15,8 @@ class m180609_134851_data extends Migration
 
         $this->execute($this->sqlDataLevels());
         $this->execute($this->sqlDataLessons());
-        $this->execute($this->sqlDataBlocks());
-        $this->execute($this->sqlDataElements());
+        //$this->execute($this->sqlDataBlocks());
+        //$this->execute($this->sqlDataElements());
 
 
     }

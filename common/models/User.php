@@ -397,18 +397,28 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
 
+    public function lessonBlockIsProcessed($l_id,$block_id){
+        $lp = LearningProcess::find()->where(['lesson_id'=>$l_id,'user_id'=>$this->id,'block_id'=>$block_id])->one();
+
+        return isset($lp->id);
+    }
 
 
 
-    public function processLesson(Lesson $lesson){
+
+
+    public function processLesson(Lesson $lesson, Block $block){
         
         if(isset($lesson->id)){
 
-            if($this->lessonIsProcessed($lesson->id)) return true;
+            if($this->lessonBlockIsProcessed($lesson->id,$block->id)) return true;
 
             $lp = new LearningProcess;
+            
             $lp->user_id = $this->id;
             $lp->lesson_id = $lesson->id;
+            $lp->block_id = $block->id;
+            $lp->type_event = LearningProcess::TYPE_EVENT_BEGIN;
             $lp->created = date("Y-m-d\TH:i:s",time());
 
             return $lp->save();

@@ -64,12 +64,25 @@ class Block extends ActiveRecord
 
 
     public function getElements(){
-        return $this->hasMany(Element::className(),['block'=>'id']);
+        return Element::find()->where(['block'=>$this->id])->orderBy(['position'=>SORT_ASC])->all();
     }
 
 
     public function getPublicElements(){
         return Element::find()->where(['block'=>$this->id,'isPublic'=>1])->orderBy(['position'=>SORT_ASC])->all();
+    }
+
+
+
+    public function getNextBlock(){
+        return self::find()->where(['lesson'=>$this->lesson,'isPublic'=>true])->andFilterWhere(['>','position',$this->position])->orderBy(['position'=>SORT_ASC])->one();
+    }
+
+
+
+
+    public function getPrevBlock(){
+        return self::find()->where(['lesson'=>$this->lesson,'isPublic'=>true])->andFilterWhere(['<','position',$this->position])->orderBy(['position'=>SORT_DESC])->one();
     }
 
 

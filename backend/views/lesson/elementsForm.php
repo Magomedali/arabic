@@ -86,14 +86,18 @@ if(is_array($block_elements) && count($block_elements)){
 								</div>
 							<?php
 							}
-									
+							
+							echo $form->field($ble,"content")->textInput();
+							
+							echo $form->field($ble,"translate")->textInput();
+							
+							echo $form->field($ble,"displayInTable")->checkbox(['id'=>'element#'.$ble['id']."displayInTable"]);
+
 						}elseif($ble['type'] == Element::TYPE_IMAGE){
 						
 							echo $form->field($ble,"files")->fileInput();
 							
-							if($ble['file_name']){
-							
-							?>
+							if($ble['file_name']){ ?>
 								
 								<div>
 									<img src="<?php echo $ble->file?>" width="150px">

@@ -18,7 +18,7 @@ class LessonController extends Controller{
 				'class'=>AccessControl::className(),
 				'rules'=>[
 					[
-						'actions'=>['index','process'],
+						'actions'=>['index','process','open','block'],
 						'allow'=>true,
 						'roles'=>['@'],
 					]
@@ -51,20 +51,27 @@ class LessonController extends Controller{
 	public function actionProcess(){
 
 		$post = Yii::$app->request->post();
-		if(!Yii::$app->user->isGuest && isset($post['lesson']) && (int)$post['lesson']){
+		if(!Yii::$app->user->isGuest && isset($post['lesson']) && (int)$post['lesson'] && isset($post['block']) && (int)$post['block']){
 
 			$lesson = Lesson::findOne((int)$post['lesson']);
 
 			if(isset($lesson->id)){
-				if(Yii::$app->user->identity->processLesson($lesson)){
 
-					Yii::$app->session->setFlash("success","Поздравляем вас, урок пройден!");
+				$block = $lesson->getBlockById((int)$post['block']);
+
+				if(isset($block->id) && Yii::$app->user->identity->processLesson($lesson,$block)){
+
+					Yii::$app->session->setFlash("success","Поздравляем вас, модуль пройден!");
+
+					$nextBlock = $block->nextBlock;
+					if(isset($nextBlock->id)){
+						return $this->redirect(['lesson/block','id'=>$lesson->id,'block_id'=>$nextBlock->id]);
+					}
 
 					$nextLesson = $lesson->nextLesson;
 					if(isset($nextLesson->id)){
 						//Перенаправляем на след урок					
-						return $this->redirect(['level/lesson','id'=>$nextLesson->id]);
-					
+						return $this->redirect(['lesson/open','id'=>$nextLesson->id]);
 					}else{
 						//Перенаправляем на след уровень
 						return $this->render('levelCompleted',['model'=>$lesson->levelModel]);
@@ -82,5 +89,65 @@ class LessonController extends Controller{
 	}
 
 
+
+	public function actionOpen($id){
+		
+		if(!$id){
+            throw new HttpException(404,'Document Does Not Exist');
+        }
+
+        $model = Lesson::find()->where(['id'=>(int)$id,'isPublic'=>true])->one();
+
+        if(!isset($model->id)){
+            throw new HttpException(404,'Document Does Not Exist');
+        }
+        
+        
+        $currentBlock = $model->firstBlock;
+        if(!isset($currentBlock->id)){
+            return $this->redirect(['level/lesson','id'=>$model->id]);
+        }
+
+        $blocks = $model->publicBlocks;
+
+        return $this->render("block",[
+        	'model'=>$model,
+        	'blocks'=>$blocks,
+        	'currentBlock'=>$currentBlock
+        ]);
+	}
+
+
+
+
+	public function actionBlock($id){
+		
+		$get = Yii::$app->request->get();
+		if(!$id){
+            throw new HttpException(404,'Document Does Not Exist');
+        }
+
+        if(!isset($get['block_id']) || !(int)$get['block_id'])
+        	throw new HttpException(404,'Document Does Not Exist');
+
+        $model = Lesson::find()->where(['id'=>(int)$id,'isPublic'=>1])->one();
+
+        if(!isset($model->id)){
+            throw new HttpException(404,'Document Does Not Exist');
+        }
+        
+        
+        $currentBlock = $model->getBlockById((int)$get['block_id']);
+        if(!isset($currentBlock->id)){
+            return $this->redirect(['level/lesson','id'=>$model->id]);
+        }
+
+        $blocks = $model->publicBlocks;
+        return $this->render("block",[
+        	'model'=>$model,
+        	'blocks'=>$blocks,
+        	'currentBlock'=>$currentBlock
+        ]);
+	}
 }
 ?>

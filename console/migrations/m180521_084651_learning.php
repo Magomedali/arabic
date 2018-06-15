@@ -80,6 +80,8 @@ class m180521_084651_learning extends Migration
             'block'       => $this->integer()->notNull(),
             'type'        => $this->integer()->notNull(),
             'content'     => $this->text()->null(),
+            'translate'   => $this->text()->null(),
+            'displayInTable' => $this->boolean()->null(),
             'file_name'   => $this->string()->null(),
             'audio_icon'  => $this->string()->null(),
             'position'    => $this->integer()->notNull(),     
@@ -100,6 +102,7 @@ class m180521_084651_learning extends Migration
             'user_id'        => $this->integer()->notNull(),
             'lesson_id'      => $this->integer()->notNull(),
             'block_id'      => $this->integer()->null(),
+            'type_event'      => $this->integer()->notNull(),
             'created'      => $this->datetime()->null(),
         ], $tableOptions);
 

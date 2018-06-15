@@ -75,7 +75,7 @@ class Lesson extends ActiveRecord
 
 
     public function getBlocks(){
-        return $this->hasMany(Block::className(),['lesson'=>'id']);
+        return Block::find()->where(['lesson'=>$this->id])->orderBy(['position'=>SORT_ASC])->all();
     }
 
 
@@ -84,8 +84,14 @@ class Lesson extends ActiveRecord
         return Block::find()->where(['lesson'=>$this->id,'isPublic'=>true])->orderBy(['position'=>SORT_ASC])->all();
     }
 
+    public function getBlockById($id){
+        return Block::find()->where(['lesson'=>$this->id,'isPublic'=>true,'id'=>$id])->one();
+    }
+    
 
-
+    public function getFirstBlock(){
+        return Block::find()->where(['lesson'=>$this->id,'isPublic'=>true])->orderBy(['position'=>SORT_ASC])->one();
+    }
 
 
     public function getFirstLesson(){
@@ -101,7 +107,9 @@ class Lesson extends ActiveRecord
         return self::find()->where(['level'=>$this->level,'isPublic'=>true])->orderBy(['number'=>SORT_DESC])->one();
     }
 
-
+    public function getLastBlock(){
+        return Block::find()->where(['lesson'=>$this->id,'isPublic'=>true])->orderBy(['position'=>SORT_DESC])->one();
+    }
 
 
 
