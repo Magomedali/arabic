@@ -17,6 +17,7 @@ class ActiveRecord extends \yii\db\ActiveRecord{
     */
     public function getAttributeLabel($attr){
         $dic = (new \ReflectionClass($this))->getShortName();
+        $dic = strtolower($dic);
         return \Yii::t($dic,$attr);
     }
 
@@ -25,7 +26,7 @@ class ActiveRecord extends \yii\db\ActiveRecord{
     {	
     	$dic = (new \ReflectionClass($this))->getShortName();
         $hints = $this->attributeHints();
-
+        $dic = strtolower($dic);
         $hint = $attr."_hint";
         $lang_hint = \Yii::t($dic,$hint);
         $hint = $hint === $lang_hint ? "" : $lang_hint;
