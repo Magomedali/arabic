@@ -101,13 +101,19 @@ class LessonController extends Controller
         
 
 
-        $newblock = new Block;
         $newBlockElements = array();
         $blocks = $model->blocks;
         $errorElements = [];
+        $currentBlock = new Block;
 
         $post = Yii::$app->request->post();
-        $updBlock = null;
+        $get = Yii::$app->request->get();
+
+        if(isset($get['block_id']) && (int)$get['block_id']){
+            $currentBlock = $model->getBlockById((int)$get['block_id']);
+            $currentBlock = isset($currentBlock->id) ? $currentBlock : new Block;
+        }
+
         if(isset($post['Lesson'])){
             if($model->load($post) && $model->save()){
                 Yii::$app->session->setFlash("success",Yii::t("level","LESSON_FORM_SUBMIT_SUCCESS"));
@@ -124,26 +130,26 @@ class LessonController extends Controller
 
             if(isset($post['Block']['id'])){
 
-                $updBlock = Block::findOne((int)$post['Block']['id']);
+                $currentBlock = Block::findOne((int)$post['Block']['id']);
 
-                if(isset($updBlock->id)){
+                if(isset($currentBlock->id)){
                     
-                    if($updBlock->load($post) && $updBlock->save()){
+                    if($currentBlock->load($post) && $currentBlock->save()){
                         
                         Yii::$app->session->setFlash("success",Yii::t("level","LESSON_FORM_BLOCK_SUBMIT_SUCCESS"));
-                        return $this->redirect(['lesson/form','id'=>$model->id]);
+                        return $this->redirect(['lesson/form','id'=>$model->id,'block_id'=>$currentBlock->id]);
                     
                     }
                 }
 
             }else{
-                $newblock = $model->addBlock($post);
+                $currentBlock = $model->addBlock($post);
 
-                if($newblock instanceof Block && !$newblock->hasErrors()){
+                if($currentBlock instanceof Block && !$currentBlock->hasErrors()){
                     
                     Yii::$app->session->setFlash("success",Yii::t("level","LESSON_FORM_BLOCK_SUBMIT_SUCCESS"));
                     
-                    return $this->redirect(['lesson/form','id'=>$model->id]);
+                    return $this->redirect(['lesson/form','id'=>$model->id,'block_id'=>$currentBlock->id]);
 
                 }else{
                     
@@ -156,9 +162,8 @@ class LessonController extends Controller
 
         return $this->render('form',[
             'model'=>$model,
-            'newblock'=>$newblock,
             'blocks'=>$blocks,
-            'updBlock' => $updBlock
+            'currentBlock' => $currentBlock
         ]);
     }
 
