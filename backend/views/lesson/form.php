@@ -103,9 +103,9 @@ $this->params['breadcrumbs'][] = $this->title;
 			$b  = $currentBlock;
 					?>
 		<div class="panel panel-default lesson-block">
+			<?php $form = ActiveForm::begin(['options'=>['class'=>'form-inline','enctype'=>'multipart/form-data']]); ?>
 			<div class="panel-heading">
 				<div class="row">
-					<?php $form = ActiveForm::begin(['options'=>['class'=>'form-inline']]); ?>
 						<div class="col-xs-1">
 							<h5><?php echo Yii::t('lesson','BLOCK',['position'=>$b['position']]); ?></h5>
 						</div>
@@ -128,7 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						
 						<?php echo isset($b->id) ? $form->field($b,'id')->hiddenInput(['value'=>$b->id])->label(false) : ""; ?>
 
-					<?php ActiveForm::end(); ?>
+					
 				</div>
 							
 							
@@ -150,15 +150,27 @@ $this->params['breadcrumbs'][] = $this->title;
 					<div class="col-xs-12">
 						<div class="block-elements">
 							<?php
+								$count_el = 1;
+
+								if(isset($errorElements) && is_array($errorElements)){
+									$count_el = count($errorElements);
+									foreach ($errorElements as $key => $be) {
+										echo $this->render("elementForm",['element'=>$be,'block'=>$b->id,'type'=>$be['type'],'count'=>$key+1]);
+									}
+								}
+
 								$block_elements = $b->elements;
-								if(count($block_elements)){
-									echo $this->render("elementsForm",['block_elements'=>$block_elements,'block'=>$b['id']]);			
+								
+								foreach ($block_elements as $key => $be) {
+									$count_el = $key+1;
+									echo $this->render("elementForm",['element'=>$be,'block'=>$b->id,'type'=>$be['type'],'count'=>$count_el]);
 								}
 							?>
 						</div>
 					</div>
 				</div>
 			</div>
+			<?php ActiveForm::end(); ?>
 		</div>
 	</div>
 </div>

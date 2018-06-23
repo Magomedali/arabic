@@ -4,31 +4,39 @@ use yii\helpers\ArrayHelper;
 use backend\models\Element;
 use yii\bootstrap\ActiveForm;
 use vova07\imperavi\Widget;
+use yii\widgets\InputWidget;
 
-$model = new Element;
+
+$errors = $element && $element->hasErrors() ? $element->getErrors() : null;
+
 ?>
 
 <div class="media well block-element">	
 
-	<?php $form = ActiveForm::begin(['action'=>Url::to(['lesson/add-element']),'options' =>['enctype'=>'multipart/form-data']]); ?>
+	<?php //$form = ActiveForm::begin(['action'=>Url::to(['lesson/add-element']),'options' =>['enctype'=>'multipart/form-data']]); ?>
 		
 		<div class="media-left">
-			<?php
-				echo Html::tag("p",Yii::t("lesson",Element::$TYPE_TITLES[$type]));
-			?>
+			<?php echo Html::tag("p",Yii::t("lesson",Element::$TYPE_TITLES[$type]));?>
 		</div>
 
 		<div class="media-body">
 			<div class="row">
 				<div class="col-xs-1">
-					<?php echo $form->field($model,'position')->textInput(['min'=>1,'type'=>'number','style'=>"width:80px"]);?>
+					<label>Номер блока</label>
+					<?php echo Html::textInput("Elements[$count][position]",isset($element['position'])?$element['position']:null,['min'=>1,'type'=>'number','style'=>"width:80px",'class'=>'form-control']);?>
+					<?php 
+						if($errors && isset($errors['position'])){
+							echo Html::tag("p",$errors['position'][0],['class'=>"help-block help-block-error"]);
+						}
+					?>
 				</div>
 
 				<?php if($type == Element::TYPE_TEXT){?>
-					<div class="col-xs-6">	
-						<?php echo $form->field($model,'content')->widget(Widget::className(), [
-							'model'=>$model,
-							'attribute'=>'content',
+					<div class="col-xs-6">
+						<label>Текст</label>
+						<?php echo Widget::widget([
+							'name'=>"Elements[$count][content]",
+							'value'=>isset($element['id'])?$element['content']:null,
 							'options'=>[
 								'id'=>"textareaContent_{$block}_{$count}"
 							],
@@ -58,12 +66,59 @@ $model = new Element;
 				<?php }else{ ?>
 					<div class="col-xs-6">
 						<?php
-							echo $form->field($model,"files")->fileInput();
+							echo Html::tag("label",Yii::t("element",'files'));
+							echo Html::fileInput("Elements[$count][files]");
+							if($errors && isset($errors['files'])){
+								echo Html::tag("p",$errors['files'][0],['class'=>"help-block help-block-error"]);
+							}else{
+								echo "<br>";
+							}
 							if($type == Element::TYPE_AUDIO){
-								echo $form->field($model,"icon")->fileInput();
-								echo $form->field($model,"content")->textInput();
-								echo $form->field($model,"translate")->textInput();
-								echo $form->field($model,"displayInTable")->checkbox();
+
+								if(isset($element['id']) && isset($element->file_name) && $element->file_name){
+								?>
+									<div>
+										<audio controls>
+											<source src="<?php echo $element->file?>">
+											Ваш браузер не пожжерживает тег audio!
+										</audio>
+									</div>
+								<?php
+								}
+							
+								echo Html::tag("label",Yii::t("element",'icon'));
+								echo Html::fileInput("Elements[$count][icon]");
+								if($errors && isset($errors['icon'])){
+									echo Html::tag("p",$errors['icon'][0],['class'=>"help-block help-block-error"]);
+								}else{
+									echo "<br>";
+								}
+								if(isset($element['id']) && isset($element->audio_icon) && $element->audio_icon){
+								?>
+									<div>
+										<img src="<?php echo $element->audio_icon_path?>">
+									</div>
+								<?php
+								}
+
+								// echo $form->field($model,"icon")->fileInput();
+								echo Html::tag("label",Yii::t("element",'content'),['class'=>"control-label"]);
+								echo Html::textInput("Elements[$count][content]",isset($element['content'])?$element['content']:null,['class'=>'form-control']);
+								echo "<br>";
+								// echo $form->field($model,"content")->textInput();
+								echo Html::tag("label",Yii::t("element",'translate'));
+								echo Html::textInput("Elements[$count][translate]",isset($element['translate'])?$element['translate']:null,['class'=>'form-control']);
+								echo "<br>";
+								// echo $form->field($model,"translate")->textInput();
+								echo Html::tag("label",Yii::t("element",'displayInTable'),['for'=>"element-$count-displayInTable"]);
+								echo Html::checkbox("Elements[$count][displayInTable]",isset($element['displayInTable'])?$element['displayInTable']:null,['id'=>"element-$count-displayInTable"]);
+								// echo $form->field($model,"displayInTable")->checkbox();
+							}elseif($type == Element::TYPE_IMAGE && isset($element['id']) && isset($element->file_name) && $element->file_name){
+								?>
+								<div>
+									<img src="<?php echo $element->file?>" width="150px">
+								</div>
+								<?php
 							}
 						?>
 					</div>
@@ -71,20 +126,38 @@ $model = new Element;
 
 				
 				<div class="col-xs-3">
-					<?php echo $form->field($model,'isPublic')->checkbox();?>
+					<?php //echo $form->field($model,'isPublic')->checkbox();?>
+					<?php 
+						echo Html::tag("label",Yii::t("element",'isPublic'),['for'=>"element-$count-isPublic",'class'=>'control-label']);
+						echo Html::checkbox("Elements[$count][isPublic]",isset($element['isPublic'])?$element['isPublic']:null,['id'=>"element-$count-isPublic"]);
+					?>
 				</div>
 
-				<div class="col-xs-2 <?php echo $type != Element::TYPE_TEXT ? "" : "col-xs-offset-3" ; ?>">
+				<div class="col-xs-2">
 					<div class="btn-group">
-					<?php echo Html::submitInput(Yii::t('site','SAVE'),['class'=>'btn btn-success']);?>
-					<?php echo Html::a("X",null,['class'=>'btn btn-danger removeElement','data-confirm'=>Yii::t('lesson','REMOVE_ELEMENT_CONFIRM')]);?>
+						<?php 
+							$class_remove = isset($element['id']) ? "removeElementFromDb" : "removeElement";
+							$url = isset($element['id']) ? ['lesson/remove-element','id'=>$element['id']] : null;
+							$opts = ['class'=>"btn btn-danger {$class_remove}"];
+							if(!$url){
+								$opts['data-confirm'] = Yii::t('lesson','REMOVE_ELEMENT_CONFIRM');
+							}
+							echo Html::a("X",$url,$opts);
+						?>
 					</div>
 				</div>
-			<?php echo $form->field($model,'type')->hiddenInput(['value'=>$type])->label(false);?>
-			<?php echo $form->field($model,'block')->hiddenInput(['value'=>$block])->label(false);?>
+			<?php 
+				//echo $form->field($model,'type')->hiddenInput(['value'=>$type])->label(false);
+				echo Html::hiddenInput("Elements[$count][type]",$type);
+			?>
+			<?php 
+				echo isset($element['id'])? Html::hiddenInput("Elements[$count][id]",$element->id):"";
+
+				echo $block ? Html::hiddenInput("Elements[$count][block]",$block) : "";
+			?>
 			</div>
 		</div>
-	<?php ActiveForm::end();?>
+	<?php //ActiveForm::end();?>
 
 </div>
 

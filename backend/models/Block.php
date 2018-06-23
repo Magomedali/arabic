@@ -12,6 +12,73 @@ use yii\web\UploadedFile;
 class Block extends cBlock
 {
 
+	public function addElements($elements){
+
+		$errorElements = array();
+
+		$addedElements = array();
+
+		
+
+		if(count($elements)){
+			foreach ($elements as $key => $data) {
+				if(isset($data['id']) && (int)$data['id']){
+					$element =  Element::find()->where(['id'=>(int)$data['id'],'block'=>$this->id])->one();
+					
+					if(!isset($element->id)) return false;
+				
+				}else{
+					$element = new Element;
+					$data['block']=$this->id;
+				}
+					
+				$params['Element'] = $data;
+
+				$element->load($params);	
+
+				
+
+				if($element->type != Element::TYPE_TEXT){
+
+					
+					$count = $key;
+					$element->files = UploadedFile::getInstanceByName("Elements[$count][files]");
+					
+					
+			        if($element->files && $element->validate()){
+			        	$element->uploadFile();
+			        }
+
+			        //Добавляем для аудио иконку
+			        if($element->type == Element::TYPE_AUDIO){
+			        	$element->icon = UploadedFile::getInstanceByName("Elements[$count][icon]");
+
+				        if($element->icon && $element->validate()){
+				        	$element->uploadAudioIcon();
+				        }
+			        }
+			    }
+
+			    if(!$element->validate()){
+			    	$errorElements[] = $element;
+			    	continue;
+			    }
+			    $element->save();
+
+			    $addedElements[] = $element;
+			}
+
+			return count($errorElements) ? $errorElements : true;
+		}
+
+		return false;
+	}
+
+
+
+
+
+
 
 
 	public function addElement($data){

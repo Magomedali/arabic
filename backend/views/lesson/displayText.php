@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\{Html,Url};
-use backend\models\{Element};
+use common\models\{Element};
 
 ?>
 <?php if($e->type == Element::TYPE_TEXT){ ?>

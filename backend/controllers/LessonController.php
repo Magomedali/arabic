@@ -24,7 +24,7 @@ class LessonController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','form','view','delete','get-element-form','remove-block','remove-element','add-element'],
+                        'actions' => ['index','form','view','block','delete','get-element-form','remove-block','remove-element','add-element'],
                         'allow' => true,
                         'roles' => ['superadmin'],
                     ],
@@ -136,21 +136,44 @@ class LessonController extends Controller
                     
                     if($currentBlock->load($post) && $currentBlock->save()){
                         
-                        Yii::$app->session->setFlash("success",Yii::t("level","LESSON_FORM_BLOCK_SUBMIT_SUCCESS"));
-                        return $this->redirect(['lesson/form','id'=>$model->id,'block_id'=>$currentBlock->id]);
-                    
+                        //Добавляем элементы блока
+                        $result = $currentBlock->addElements($post['Elements']);
+                        if($result === true){
+                            Yii::$app->session->setFlash("success",Yii::t("level","LESSON_FORM_BLOCK_SUBMIT_SUCCESS"));
+                            return $this->redirect(['lesson/form','id'=>$model->id,'block_id'=>$currentBlock->id]);
+                        }elseif(is_array($result) && count($result)){
+                            $errorElements = $result;
+                        }
                     }
                 }
 
             }else{
+
+                // print_r($_POST);
+                // print_r($_FILES);
+                // $file = \yii\web\UploadedFile::getInstanceByName("Elements[1]['files']");
+                // exit;
+
                 $currentBlock = $model->addBlock($post);
 
                 if($currentBlock instanceof Block && !$currentBlock->hasErrors()){
                     
-                    Yii::$app->session->setFlash("success",Yii::t("level","LESSON_FORM_BLOCK_SUBMIT_SUCCESS"));
+                    if(isset($post['Elements'])){
+                        //Добавляем элементы блока
+                        $result = $currentBlock->addElements($post['Elements']);
+                        if($result === true){
+                            Yii::$app->session->setFlash("success",Yii::t("level","LESSON_FORM_BLOCK_SUBMIT_SUCCESS"));
+                            return $this->redirect(['lesson/form','id'=>$model->id,'block_id'=>$currentBlock->id]);
+                        }elseif(is_array($result) && count($result)){
+                            $errorElements = $result;
+                        }
+                    }else{
+                        Yii::$app->session->setFlash("success",Yii::t("level","LESSON_FORM_BLOCK_SUBMIT_SUCCESS"));
+                        return $this->redirect(['lesson/form','id'=>$model->id,'block_id'=>$currentBlock->id]);
+                    }
                     
-                    return $this->redirect(['lesson/form','id'=>$model->id,'block_id'=>$currentBlock->id]);
 
+                    
                 }else{
                     
                     Yii::$app->session->setFlash("danger",Yii::t("level","LESSON_FORM_BLOCK_SUBMIT_ERROR"));
@@ -163,7 +186,8 @@ class LessonController extends Controller
         return $this->render('form',[
             'model'=>$model,
             'blocks'=>$blocks,
-            'currentBlock' => $currentBlock
+            'currentBlock' => $currentBlock,
+            'errorElements'=>$errorElements
         ]);
     }
 
@@ -203,19 +227,53 @@ class LessonController extends Controller
 
 
     public function actionView($id){
-
+        
+        $get = Yii::$app->request->get();
         if(!$id){
             throw new HttpException(404,'Document Does Not Exist');
         }
 
-        $model = Lesson::findOne((int)$id);
+        $model = Lesson::find()->where(['id'=>(int)$id,'isPublic'=>1])->one();
 
         if(!isset($model->id)){
             throw new HttpException(404,'Document Does Not Exist');
         }
-
-        return $this->render('view',[
+        
+        return $this->render("view",[
             'model'=>$model
+        ]);
+    }
+
+
+
+    public function actionBlock($id){
+        
+        $get = Yii::$app->request->get();
+        if(!$id){
+            throw new HttpException(404,'Document Does Not Exist');
+        }
+
+        $model = Lesson::find()->where(['id'=>(int)$id,'isPublic'=>1])->one();
+
+        if(!isset($model->id)){
+            throw new HttpException(404,'Document Does Not Exist');
+        }
+        
+        if(isset($get['block_id']) && (int)$get['block_id']){
+            $currentBlock = $model->getBlockById((int)$get['block_id']);
+        }else{
+            $currentBlock = $model->getFirstBlock();
+        }
+        
+        if(!isset($currentBlock->id)){
+            return $this->redirect(['level/lesson','id'=>$model->id]);
+        }
+
+        $blocks = $model->publicBlocks;
+        return $this->render("block",[
+            'model'=>$model,
+            'blocks'=>$blocks,
+            'currentBlock'=>$currentBlock
         ]);
     }
 
@@ -262,23 +320,23 @@ class LessonController extends Controller
         }
 
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $get = Yii::$app->request->get();
+        $count = isset($get['count']) ? (int)$get['count'] + 1 : 1;
+        $type = isset($get['type']) && array_key_exists($get['type'],Element::$TYPE_TITLES) ? $get['type'] : Element::TYPE_TEXT;
+        
         if((int)$id){
             $block = Block::findOne((int)$id);
             if(!isset($block->id)){
                 return $ans['error'] = 1;
             }
-
-            $get = Yii::$app->request->get();
-            $count = isset($get['count']) ? (int)$get['count'] + 1 : 0;
-            $type = isset($get['type']) && array_key_exists($get['type'],Element::$TYPE_TITLES) ? $get['type'] : Element::TYPE_TEXT;
-
-            $ans['html'] = $this->renderAjax("elementForm",['block'=>$block->id,'type'=>$type,'count'=>$count]);
+            $ans['html'] = $this->renderAjax("elementForm",['element'=>null,'block'=>$block->id,'type'=>$type,'count'=>$count]);
             
-            return $ans;
-
+        }else{
+            $ans['html'] = $this->renderAjax("elementForm",['element'=>null,'block'=>0,'type'=>$type,'count'=>$count]);
         }
         
-        return $ans['error'] = 1;
+        return $ans;
         
     }
 

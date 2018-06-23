@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\{Html,Url};
-use backend\models\{Element};
+use common\models\{Element};
 
 ?>
 <?php if($e->type == Element::TYPE_AUDIO){ ?>
@@ -17,7 +17,7 @@ use backend\models\{Element};
 		<?php if($e->file_name && file_exists($_SERVER['DOCUMENT_ROOT'].$e->file)){?>
 		<audio id="audio_<?php echo $e->block?>_<?php echo $e->id?>" controls>
 			<source src="<?php echo $e->file?>">
-			Ваш браузер не пожжерживает тег audio!
+			Ваш браузер не поддерживает тег audio!
 		</audio>
 		<?php } ?>
 	</div>
