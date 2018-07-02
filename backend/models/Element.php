@@ -13,7 +13,7 @@ class Element extends cElement
 
 	public function uploadFile()
     {
-        if ($this->type != self::TYPE_TEXT && $this->validate()) {
+        if($this->type != self::TYPE_TEXT && $this->validate()){
 
             $filePath = Yii::getAlias('@files').self::$FOLDERS[$this->type];
 
@@ -42,7 +42,7 @@ class Element extends cElement
             }
             
             return $this->file_name;
-        } else {
+        }else{
             return false;
         }
 

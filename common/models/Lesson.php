@@ -85,6 +85,10 @@ class Lesson extends ActiveRecord
     }
 
     public function getBlockById($id){
+        return Block::find()->where(['lesson'=>$this->id,'id'=>$id])->one();
+    }
+    
+    public function getPublicBlockById($id){
         return Block::find()->where(['lesson'=>$this->id,'isPublic'=>true,'id'=>$id])->one();
     }
     

@@ -33,10 +33,8 @@ class Block extends cBlock
 				}
 					
 				$params['Element'] = $data;
-
+                
 				$element->load($params);	
-
-				
 
 				if($element->type != Element::TYPE_TEXT){
 
