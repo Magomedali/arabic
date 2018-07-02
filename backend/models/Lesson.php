@@ -25,5 +25,19 @@ class Lesson extends cLesson
 
     }
 
+
+    public function delete(){
+
+        $blocks = $this->getBlocks();
+        foreach ($blocks as $key => $b) {
+        
+            if(!$b->deleteBlock()){
+                return false;
+            }
+        
+        }
+        return parent::delete();
+    }
+
 }
 ?>

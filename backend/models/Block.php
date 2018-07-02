@@ -148,8 +148,12 @@ class Block extends cBlock{
 
 
 	public function deleteBlock(){
-		$this->removeElements();
-		$this->delete();
+		
+		if($this->removeElements()){
+			return $this->delete();
+		}
+
+		return false;
 	}
 }
 
