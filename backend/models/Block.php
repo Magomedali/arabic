@@ -6,11 +6,12 @@ use yii\base\NotSupportedException;
 
 use common\models\Block as cBlock;
 use backend\models\Element;
-// use backend\helpers\UploadedFile;
 use yii\web\UploadedFile;
 
-class Block extends cBlock
-{
+class Block extends cBlock{
+
+
+
 
 	public function addElements($elements){
 
@@ -18,13 +19,10 @@ class Block extends cBlock
 
 		$addedElements = array();
 
-		
-
 		if(count($elements)){
 			foreach ($elements as $key => $data) {
 				if(isset($data['id']) && (int)$data['id']){
 					$element =  Element::find()->where(['id'=>(int)$data['id'],'block'=>$this->id])->one();
-					
 					if(!isset($element->id)) return false;
 				
 				}else{
@@ -32,8 +30,11 @@ class Block extends cBlock
 					$data['block']=$this->id;
 				}
 					
+				$data['isPublic'] = isset($data['isPublic']) ? 1 : 0;
+				$data['displayInTable'] = isset($data['displayInTable']) ? 1 : 0;
+
 				$params['Element'] = $data;
-                
+				
 				$element->load($params);	
 
 				if($element->type != Element::TYPE_TEXT){

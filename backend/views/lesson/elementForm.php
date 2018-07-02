@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\{Html,Url};
 use yii\helpers\ArrayHelper;
 use backend\models\Element;
@@ -111,7 +112,7 @@ $errors = $element && $element->hasErrors() ? $element->getErrors() : null;
 								echo "<br>";
 								// echo $form->field($model,"translate")->textInput();
 								echo Html::tag("label",Yii::t("element",'displayInTable'),['for'=>"element-$count-displayInTable"]);
-								echo Html::checkbox("Elements[$count][displayInTable]",isset($element['displayInTable'])?$element['displayInTable']:null,['id'=>"element-$count-displayInTable"]);
+								echo Html::checkbox("Elements[$count][displayInTable]",isset($element['displayInTable'])?$element['displayInTable']:null,['id'=>"element-$count-displayInTable",'value'=>1]);
 								// echo $form->field($model,"displayInTable")->checkbox();
 							}elseif($type == Element::TYPE_IMAGE && isset($element['id']) && isset($element->file_name) && $element->file_name){
 								?>

@@ -99,9 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
 	<div class="col-xs-12">
-		<?php
-			$b  = $currentBlock;
-					?>
+		<?php $b  = $currentBlock; ?>
 		<div class="panel panel-default lesson-block">
 			<?php $form = ActiveForm::begin(['options'=>['class'=>'form-inline','enctype'=>'multipart/form-data']]); ?>
 			<div class="panel-heading">
